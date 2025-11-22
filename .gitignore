@@ -1,0 +1,250 @@
+# .gitignore - Starter Template
+# This is a recommended starter configuration. Customize based on your project's technology stack.
+
+# ============================================
+# Operating System Files
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains IDEs (IntelliJ, WebStorm, PhpStorm, PyCharm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw[a-p]
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ============================================
+# Environment & Secrets
+# ============================================
+
+# Environment files (CRITICAL - NEVER commit secrets!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Configuration files with potential secrets
+config.local.php
+config.local.js
+config.local.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+secrets.yml
+credentials.json
+.htpasswd
+
+# ============================================
+# Logs & Temporary Files
+# ============================================
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+pip-log.txt
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# ============================================
+# Dependency Directories
+# ============================================
+
+# Node.js / JavaScript
+node_modules/
+jspm_packages/
+bower_components/
+.npm
+.yarn/
+.pnp.*
+.yarn-integrity
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+env/
+ENV/
+.venv
+
+# PHP
+vendor/
+composer.lock  # Uncomment if you want to version lock file
+
+# Ruby
+Gemfile.lock  # Uncomment if you want to version lock file
+
+# Go
+/vendor/
+
+# Rust
+target/
+Cargo.lock  # Uncomment if you want to version lock file
+
+# ============================================
+# Build Output & Compiled Files
+# ============================================
+
+# Compiled output directories
+build/
+dist/
+out/
+.next/
+.nuxt/
+.output/
+.vercel/
+.netlify/
+
+# Production builds
+public/build/
+*.min.js
+*.min.css
+
+# ============================================
+# Testing & Coverage
+# ============================================
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+.coverage
+.pytest_cache/
+htmlcov/
+junit.xml
+
+# ============================================
+# Databases
+# ============================================
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Other database files
+*.mdb
+*.accdb
+*.sql  # Be careful - you might want to version some SQL files (migrations)
+
+# ============================================
+# Package Manager Lock Files (Optional)
+# ============================================
+
+# Uncomment these if you DON'T want to version lock files
+# Note: It's generally recommended to commit lock files for reproducible builds
+
+# package-lock.json  # npm
+# yarn.lock          # Yarn
+# pnpm-lock.yaml     # pnpm
+# bun.lockb          # Bun
+# Pipfile.lock       # Python Pipenv
+# poetry.lock        # Python Poetry
+# Gemfile.lock       # Ruby
+# Cargo.lock         # Rust
+
+# ============================================
+# Project-Specific (Customize as needed)
+# ============================================
+
+# Add your project-specific ignores here
+# Examples:
+# /uploads/
+# /storage/
+# /data/
+# *.custom
