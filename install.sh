@@ -33,6 +33,7 @@ files=(
     "GETTING_STARTED.md"
     ".claude/security.md"
     ".claude/testing.md"
+    ".claude/safe-coding.md"
     ".claude/api-design.md"
     ".claude/structure.md"
     ".claude/database.md"

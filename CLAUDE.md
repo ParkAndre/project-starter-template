@@ -259,6 +259,17 @@ For comprehensive guidelines on specific topics, see:
 ### Code Quality & Standards
 @.claude/standards.md
 
+### Safe Coding & Change Control (Optional - recommended for production projects)
+# @.claude/safe-coding.md
+# Uncomment the line above to enable strict change control rules:
+# - Requires Change Plan before implementing
+# - Explicit approval for dangerous operations
+# - Read-before-write enforcement
+# - Environment awareness (dev/staging/production)
+# - Prevents unintended refactoring
+#
+# Choose mode in safe-coding.md: SAFE_MODE (strict) or FAST_MODE (flexible)
+
 ---
 
 ## Critical Rules Summary

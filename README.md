@@ -71,7 +71,8 @@ project-starter-template/
 ├── install.sh                 # Installation script
 └── .claude/                   # Modular guideline files
     ├── security.md           # Security best practices (OWASP ASVS-based)
-    ├── testing.md            # Testing requirements
+    ├── testing.md            # Testing requirements & workflow
+    ├── safe-coding.md        # Change control & safe coding rules (optional)
     ├── api-design.md         # API standards & logging
     ├── structure.md          # Project structure conventions
     ├── database.md           # Database & migration guidelines
@@ -81,16 +82,17 @@ project-starter-template/
 ### File Sizes
 
 ```
-CLAUDE.md               ~6KB   (200 lines - optimized for Claude Code)
+CLAUDE.md               ~7KB   (200 lines - optimized for Claude Code)
 .claude/security.md     ~25KB  (comprehensive security guidelines)
-.claude/testing.md      ~2KB   (testing requirements)
+.claude/testing.md      ~15KB  (testing requirements & workflow)
+.claude/safe-coding.md  ~12KB  (change control rules - optional)
 .claude/api-design.md   ~3KB   (API & logging standards)
 .claude/structure.md    ~3KB   (project structure)
 .claude/database.md     ~3KB   (database best practices)
 .claude/standards.md    ~3KB   (code quality rules)
 .gitignore              ~6KB   (comprehensive starter template)
 -------------------------------------------
-Total:                  ~51KB  (well optimized for context)
+Total:                  ~77KB  (well optimized for context)
 ```
 
 ---
