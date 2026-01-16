@@ -1,47 +1,42 @@
 # Code Quality & Standards
 
-> **Note:** These code quality and standards guidelines are language-agnostic. Apply these principles to your codebase regardless of whether you're working with JavaScript/TypeScript, Python, PHP, Go, Rust, or any other language.
+## Code Quality Principles
 
-## Code Quality Standards
-
-- Write self-documenting code with clear, descriptive variable and function names
-- Prefer meaningful names over comments (e.g., `calculateUserTotalPurchases()` instead of `calc()` with comment)
-- Keep functions small and focused on a single responsibility
-- Add comments only when code intent isn't obvious from names alone
-
-## Testing & Accessibility Reminders
-
-- Test edge cases and error conditions
-- Use transactions for multi-step database operations
-- Provide clear form validation error messages
-- Include alt text for images
+- **Self-documenting code** - Use clear, descriptive variable and function names
+- **Meaningful names over comments** - `calculateUserTotalPurchases()` instead of `calc()` with comment
+- **Single responsibility** - Keep functions small and focused on one task
+- **Comments for intent** - Add comments only when code intent isn't obvious from names
 
 ---
 
-# Accessibility
+## Code Cleanup (ALWAYS do after changes)
 
-- ALWAYS make interactive elements keyboard accessible (Tab, Enter, Space, Arrow keys)
-- ALWAYS use proper semantic HTML tags (`<button>`, `<nav>`, `<main>`, `<article>`)
-- ALWAYS add ARIA labels for screen readers where semantic HTML insufficient
-- ALWAYS ensure color contrast meets WCAG AA standards (4.5:1 for normal text, 3:1 for large text)
-- NEVER rely solely on color to convey information
-- ALWAYS provide text alternatives for images (alt text)
-- ALWAYS ensure forms are accessible (labels, error messages, focus states)
+- Remove unused imports and dependencies
+- Delete commented-out code (use git history if needed later)
+- Remove unused variables, functions, classes
+- Remove debug `console.log` / `print` statements
+- Remove dead code paths (unreachable after refactor)
+- Update or remove outdated comments
+- Remove completed TODO comments
+- Run linter to catch unused code
+- Check for unused dependencies
+- Clean up unused API endpoints
+- Remove unused types/interfaces
 
 ---
 
-# Documentation Requirements
+## Documentation
 
-- Update README.md when adding new features or changing setup
-- Document all environment variables in `.env.example`
-- Keep API documentation up to date with actual implementation
+- Update README.md when adding features or changing setup
+- Keep `.env.example` updated with all required variables
+- Keep API documentation current with implementation
 - Include setup instructions for new developers
 
 ---
 
-# UI/UX Consistency
+## UI/UX Consistency
 
-- Use consistent spacing (e.g., 4px, 8px, 16px, 24px, 32px)
+- Use consistent spacing (4px, 8px, 16px, 24px, 32px)
 - Use design system/component library for consistency
 - Keep button styles and colors consistent
 - Use consistent loading states (spinners, skeletons)
@@ -50,22 +45,20 @@
 
 ---
 
-# Code Cleanup Guidelines
+## Accessibility
 
-After any code change or refactor:
+- ALWAYS make interactive elements keyboard accessible (Tab, Enter, Space, Arrow keys)
+- ALWAYS use semantic HTML (`<button>`, `<nav>`, `<main>`, `<article>`)
+- ALWAYS add ARIA labels where semantic HTML insufficient
+- ALWAYS ensure color contrast meets WCAG AA (4.5:1 normal text, 3:1 large text)
+- NEVER rely solely on color to convey information
+- ALWAYS provide alt text for images
+- ALWAYS ensure forms are accessible (labels, error messages, focus states)
 
-- ALWAYS remove unused imports and dependencies
-- ALWAYS delete commented-out code (use git history if you need it later)
-- ALWAYS remove unused variables, functions, and classes
-- ALWAYS remove debug console.log statements before committing
-- ALWAYS clean up temporary test code
-- Delete unused files (orphaned components, old modules)
-- Remove unused CSS classes and styles
-- Remove completed TODO comments
-- Remove dead code paths (unreachable code after refactor)
-- Update or remove outdated comments
-- Remove unused environment variables from `.env.example`
-- Run linter to catch unused code
-- Check for unused dependencies
-- Clean up unused API endpoints
-- Remove unused types/interfaces
+---
+
+## Testing Reminders
+
+- Test edge cases and error conditions
+- Use transactions for multi-step database operations
+- Provide clear form validation error messages

@@ -1,63 +1,48 @@
 # CLAUDE.md
 
-> **About this file:** Claude Code automatically reads this file at the start of every conversation. All guidelines here (and imported files using `@.claude/*.md` syntax) become Claude's instructions for this project. You never need to manually remind Claude - it already knows!
+> **About this file:** Claude Code automatically reads this file at the start of every conversation. All guidelines here and imported files become Claude's instructions. You never need to manually remind Claude - it already knows!
 
 ---
 
 ## Development Workflow
 
-### Claude Workflow
+### Issue-Driven Development
 
-When asked to change project source code or database dump:
+When asked to change project source code:
 
 1. Ask: "Should we create a GitHub issue for this?"
 2. If yes:
-   - Create issue using `gh issue create` (follow templates below)
-   - Create and checkout linked branch: `gh issue develop <issue-number> --checkout`
+   - Create issue: `gh issue create --title "Title" --body "Description"`
+   - Create and checkout branch: `gh issue develop <issue-number> --checkout`
    - Implement and commit changes to branch
    - Ask: "Is there anything else you want to change, or should I squash merge this to main and close issue #XX?"
-   - If changes needed: make additional commits
    - If complete:
-     - Squash merge to main: `git checkout main && git merge --squash XX-short-descr`
-     - Commit with proper message (see Commit Guidelines): `git commit`
-     - Push to remote: `git push origin main`
+     - Squash merge: `git checkout main && git merge --squash XX-short-descr`
+     - Commit with proper message: `git commit`
+     - Push: `git push origin main`
 
-**Note:** If code changes are completed first and issue is created afterwards, skip branch creation. Simply create issue with `gh issue create`, commit directly to main with `Closes #XX` in commit message.
+**Note:** If code changes completed first and issue created afterwards, skip branch creation. Create issue with `gh issue create`, commit directly to main with `Closes #XX` in message.
 
-### Issue Creation
-
-```bash
-gh issue create --title "Title" --body "Description"
-```
+### Issue Templates
 
 **Feature:**
 Title: `As a [role] I [can/want to] [action] so that [benefit]`
-Body:
 ```
-As a [role] I [can/want to] [action] so that [benefit]`
+As a [role] I [can/want to] [action] so that [benefit]
 
 Acceptance criteria:
 - There is a new menu item called "Logs" in the main menu
 - Clicking that takes to /logs which shows a list of events
 - The most recent events are on the top
 ```
+Format: One sentence per line, start with capital, simple and testable.
 
-Format: One sentence per line, start with capital, simple and testable, no numbering/Given-When-Then.
-
-**Bug:**
-Title: `[Brief description]` | Labels: `bug`
-Body:
+**Bug:** Title: `[Brief description]` | Labels: `bug`
 ```
 1. [Reproduction steps]
 Expected: [What should happen]
 Actual: [What happens]
 ```
-
-### Implementation
-
-- Branch: `XX-short-description` (XX = issue number)
-- Make commits on branch with simple, descriptive messages
-- Squash merge to main when complete with proper commit message
 
 ---
 
@@ -67,7 +52,7 @@ Actual: [What happens]
 
 ### Workflow 1: Branch Commits (Work in Progress)
 
-Simple, descriptive messages while working on a feature branch. Commit frequently as you work.
+Simple, descriptive messages while working on a feature branch. Commit frequently.
 
 **Examples:**
 - `Add event history modal UI`
@@ -78,18 +63,13 @@ Simple, descriptive messages while working on a feature branch. Commit frequentl
 
 ### Workflow 2: Squash Merge to Main (Final Commit)
 
-ONLY when squash merging completed feature to main. Creates clean history and closes the issue.
+ONLY when squash merging completed feature to main. Creates clean history and closes issue.
 
 **Format:**
 - Features: `As a [role] I [action] so that [benefit]\nCloses #XX`
 - Fixes: `Fix: [description]\nCloses #XX`
 - Refactor: `Refactor: [description]`
 - Style: `Style: [description]`
-
-**Rules:**
-- ALWAYS include `Closes #XX` on separate line when resolving issues
-- NEVER include "Co-Authored-By: Claude" or any Claude attribution
-- Use detailed commit body for complex changes (see example below)
 
 **Examples:**
 ```
@@ -105,33 +85,33 @@ As a student I can see my learning outcomes
 Closes #80
 ```
 
-**Bad commit messages (for both workflows):** `wip`, `fixed stuff`, `updates`
+**Rules:**
+- ALWAYS include `Closes #XX` on separate line when resolving issues
+- NEVER include "Co-Authored-By: Claude" or any Claude attribution
+- Use detailed commit body for complex changes
+
+**Bad commit messages:** `wip`, `fixed stuff`, `updates`, `changes`
 
 ---
 
 ## Verification Standards
 
-**IMPORTANT: NEVER claim something is working, running, or accessible unless you have actually verified it**
+**NEVER claim something is working unless you have actually verified it:**
 
-Always verify functionality before claiming it works:
 - Run the application/tests and confirm no errors
 - Check actual outputs and behavior
 - If verification fails, report the actual error - don't claim it works
 
-Example: Don't say "Docker is running on port 3000" unless you ran `docker compose up` and verified it started without errors
+Example: Don't say "Docker is running on port 3000" unless you ran `docker compose up` and verified it started without errors.
 
 ---
 
-## Quick Reference
-
-### Common Commands
+## Commands
 
 **⚠️ CUSTOMIZE THIS SECTION FOR YOUR PROJECT ⚠️**
 
 ```bash
 # [YOUR_COMMANDS] - Replace with your actual project commands
-
-# Examples for different stacks:
 
 # Node.js/Bun:
 # npm run dev       # Start development server
@@ -153,36 +133,33 @@ Example: Don't say "Docker is running on port 3000" unless you ran `docker compo
 # go run .          # Run application
 # go test ./...     # Run tests
 # go build          # Build binary
-
-# Rust:
-# cargo run         # Run application
-# cargo test        # Run tests
-# cargo build --release  # Build for production
 ```
 
-### File Placement Quick Guide
+---
+
+## File Placement
 
 **General Structure (Technology-Agnostic)**
 
-| Component Type | Typical Location | Description |
-|----------------|------------------|-------------|
-| UI Components | `/src/components` or `/src/views` | Reusable UI elements |
-| Routes/Controllers | `/src/routes` or `/src/controllers` | Request handlers and routing |
-| Business Logic | `/src/services` or `/src/lib` | Core application logic |
-| Data Models | `/src/models` or `/src/entities` | Database models and schemas |
-| Utilities | `/src/utils` or `/src/helpers` | Helper functions |
-| Type Definitions | `/src/types` or `/src/interfaces` | Type/interface definitions |
-| Middleware | `/src/middleware` | Request/response middleware |
-| Configuration | `/src/config` or `/config` | App configuration files |
-| Tests | Next to file or `/tests` | Test files |
-| Database Migrations | `/migrations` or `/db/migrations` | Database schema changes |
-| Static Assets (bundled) | `/src/assets` | Images, fonts (processed) |
-| Static Files (served) | `/public` or `/static` | Directly served files |
+| Component Type | Typical Location |
+|----------------|------------------|
+| UI Components | `/src/components` or `/src/views` |
+| Routes/Controllers | `/src/routes` or `/src/controllers` |
+| Business Logic | `/src/services` or `/src/lib` |
+| Data Models | `/src/models` or `/src/entities` |
+| Utilities | `/src/utils` or `/src/helpers` |
+| Type Definitions | `/src/types` or `/src/interfaces` |
+| Middleware | `/src/middleware` |
+| Configuration | `/src/config` or `/config` |
+| Tests | Next to file or `/tests` |
+| Database Migrations | `/migrations` or `/db/migrations` |
+| Static Assets (bundled) | `/src/assets` |
+| Static Files (served) | `/public` or `/static` |
 
 **Stack-Specific Examples:**
 
 <details>
-<summary>React/Node.js Example</summary>
+<summary>React/Node.js</summary>
 
 ```
 src/
@@ -200,7 +177,7 @@ public/             # Static files (favicon, robots.txt)
 </details>
 
 <details>
-<summary>PHP/Laravel Example</summary>
+<summary>PHP/Laravel</summary>
 
 ```
 app/
@@ -219,7 +196,7 @@ database/migrations/  # Database migrations
 </details>
 
 <details>
-<summary>Python/Django Example</summary>
+<summary>Python/Django</summary>
 
 ```
 app_name/
@@ -237,38 +214,15 @@ migrations/           # Database migrations
 
 ---
 
-## Detailed Guidelines (Imported)
+## Imported Guidelines
 
-For comprehensive guidelines on specific topics, see:
-
-### Security
 @.claude/security.md
-
-### Testing
 @.claude/testing.md
-
-### API Design & Logging
 @.claude/api-design.md
-
-### Project Structure
 @.claude/structure.md
-
-### Database
 @.claude/database.md
-
-### Code Quality & Standards
 @.claude/standards.md
-
-### Safe Coding & Change Control (Optional - recommended for production projects)
-# @.claude/safe-coding.md
-# Uncomment the line above to enable strict change control rules:
-# - Requires Change Plan before implementing
-# - Explicit approval for dangerous operations
-# - Read-before-write enforcement
-# - Environment awareness (dev/staging/production)
-# - Prevents unintended refactoring
-#
-# Choose mode in safe-coding.md: SAFE_MODE (strict) or FAST_MODE (flexible)
+@.claude/issue-creation.md
 
 ---
 
@@ -281,7 +235,7 @@ For comprehensive guidelines on specific topics, see:
 - Use environment variables for secrets
 - Validate user input
 - Use parameterized queries (prevent SQL injection)
-- Design code to be modular when possible (separate concerns, reusable components)
+- Design code to be modular (separate concerns, reusable components)
 
 ### Never
 - Commit directly to main
@@ -293,12 +247,12 @@ For comprehensive guidelines on specific topics, see:
 
 ### Protected Areas
 
-NEVER modify without explicit approval:
+**NEVER modify without explicit approval:**
 - Database migration files (once committed)
 - `.github/workflows/*` (CI/CD configs)
 - `package-lock.json` or `bun.lock` (unless updating deps)
 
-ALWAYS ask before:
+**ALWAYS ask before:**
 - Changing authentication/authorization logic
 - Modifying database schemas
 - Adding new dependencies

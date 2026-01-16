@@ -1,41 +1,18 @@
 # Project Starter Template
 
-A comprehensive, technology-agnostic project starter template with development workflow guidelines, security best practices, and Claude Code configuration. Perfect for starting new projects with solid foundations.
+Technology-agnostic project guidelines with Claude Code configuration. Provides security best practices, testing requirements, and Git workflow for any tech stack.
 
 ---
 
-## 📋 What Is This?
-
-This is a **reference documentation template** designed to be copied into new projects. It provides:
-
-- **Git workflow** with GitHub issues and branch management
-- **Security guidelines** (OWASP ASVS-based: XSS, SQL injection, authentication, cryptography)
-- **Testing requirements** and best practices
-- **API design standards** (RESTful conventions, error handling, logging)
-- **Database guidelines** (migrations, indexing, query optimization)
-- **Code quality standards** (structure, accessibility, cleanup rules)
-- **Claude Code configuration** (CLAUDE.md with modular imports)
-
-The guidelines are **technology-agnostic** - they apply to any stack (Node.js, PHP, Python, Go, Rust, etc.), with implementation examples provided where helpful.
-
----
-
-## ⚡ Quick Start
-
-> **👉 New to this template?** See [GETTING_STARTED.md](GETTING_STARTED.md) for a step-by-step guide.
+## Quick Start
 
 ### Install in New Project
 
 ```bash
-# Create new project directory
-mkdir [YOUR_PROJECT_NAME]
-cd [YOUR_PROJECT_NAME]
+mkdir my-project && cd my-project
 
-# Install template (using curl)
-curl -fsSL https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/project-starter-template/main/install.sh | bash
-
-# Or using wget
-wget -qO- https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/project-starter-template/main/install.sh | bash
+# Install template
+curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
 
 # Initialize git
 git init
@@ -49,372 +26,214 @@ git commit -m "Initial commit with project starter template"
 cd existing-project
 
 # Install template
-curl -fsSL https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/project-starter-template/main/install.sh | bash
-
-# Review and customize files (see Customization section below)
+curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
 
 # Commit
-git add CLAUDE.md .claude/ .gitignore
+git add CLAUDE.md .claude/ .commands/ .gitignore
 git commit -m "Add project starter template and guidelines"
 ```
 
----
+### Verify It Works
 
-## 📦 What's Included
+Ask Claude Code: "What are our commit message conventions?"
 
-```
-project-starter-template/
-├── README.md                  # This file - overview and documentation
-├── GETTING_STARTED.md         # Step-by-step setup guide (start here!)
-├── CLAUDE.md                  # Main Claude Code config (~200 lines)
-├── .gitignore                 # Comprehensive starter .gitignore
-├── install.sh                 # Installation script
-└── .claude/                   # Modular guideline files
-    ├── security.md           # Security best practices (OWASP ASVS-based)
-    ├── testing.md            # Testing requirements & workflow
-    ├── safe-coding.md        # Change control & safe coding rules (optional)
-    ├── api-design.md         # API standards & logging
-    ├── structure.md          # Project structure conventions
-    ├── database.md           # Database & migration guidelines
-    └── standards.md          # Code quality & cleanup rules
-```
-
-### File Sizes
-
-```
-CLAUDE.md               ~7KB   (200 lines - optimized for Claude Code)
-.claude/security.md     ~25KB  (comprehensive security guidelines)
-.claude/testing.md      ~15KB  (testing requirements & workflow)
-.claude/safe-coding.md  ~12KB  (change control rules - optional)
-.claude/api-design.md   ~3KB   (API & logging standards)
-.claude/structure.md    ~3KB   (project structure)
-.claude/database.md     ~3KB   (database best practices)
-.claude/standards.md    ~3KB   (code quality rules)
-.gitignore              ~6KB   (comprehensive starter template)
--------------------------------------------
-Total:                  ~77KB  (well optimized for context)
-```
+If Claude answers correctly with the TWO workflow explanation, it's working.
 
 ---
 
-## ✨ Features
+## What's Included
 
-### Git Workflow
-- ✅ GitHub issue-driven development
-- ✅ Feature branch workflow with squash merging
-- ✅ Commit message conventions (features, fixes, refactors)
-- ✅ Protected main branch workflow
+```
+CLAUDE.md                  # Main config (~260 lines)
+.gitignore                 # Comprehensive starter template
+.claude/
+├── security.md            # Security guidelines (~340 lines, OWASP-based)
+├── testing.md             # Testing requirements (~190 lines)
+├── api-design.md          # API & logging standards (~120 lines)
+├── structure.md           # Project structure conventions (~76 lines)
+├── database.md            # Database & migration guidelines (~72 lines)
+├── standards.md           # Code quality rules (~65 lines)
+└── issue-creation.md      # Issue writing guide (~183 lines)
+.commands/
+├── README.md              # Commands installation guide
+├── analyze.md             # /analyze - code and system analysis
+├── research.md            # /research - web research with Playwright
+└── update-project.md      # /update-project - git pull, migrations, deps
+```
 
-### Security (OWASP ASVS-based)
-- ✅ Input validation & sanitization
-- ✅ SQL injection prevention (parameterized queries)
-- ✅ XSS prevention (output encoding)
-- ✅ Authentication & authorization guidelines
-- ✅ Session management best practices
-- ✅ CSRF protection
-- ✅ Cryptography standards (minimum 128-bit security)
-- ✅ HTTP security headers (CSP, HSTS, X-Frame-Options, etc.)
-- ✅ Secret management (environment variables)
-- ✅ Rate limiting guidelines
-- ✅ Error handling & logging (no information disclosure)
-
-### Code Quality
-- ✅ Project structure conventions
-- ✅ Testing requirements (unit, integration, edge cases)
-- ✅ API design standards (RESTful, status codes, pagination)
-- ✅ Database migration procedures
-- ✅ Accessibility guidelines (WCAG AA)
-- ✅ Code cleanup checklist
-
-### Claude Code Integration
-- ✅ Optimized CLAUDE.md (~200 lines, recommended best practice)
-- ✅ Modular design with `@.claude/*.md` imports
-- ✅ Concise and scannable for AI context
+**Total: ~1,300 lines of guidelines**
 
 ---
 
-## 🎯 Customization Checklist
-
-After installing the template, customize these files for your project:
-
-### 1. **CLAUDE.md** (Required)
-
-- [ ] Update "Common Commands" section with your actual build/test/dev commands
-- [ ] Review and adjust File Placement table to match your project structure
-- [ ] Modify Critical Rules if you have project-specific requirements
-- [ ] Update Protected Areas list with your critical files/directories
-
-**Find and replace:**
-- `[YOUR_PROJECT_NAME]` → Your actual project name
-- `[YOUR_COMMANDS]` → Your actual commands (npm/bun/composer/pip/cargo/etc.)
-
-### 2. **.gitignore** (Review)
-
-- [ ] Review included ignores and remove what's not applicable
-- [ ] Add project-specific ignore patterns (e.g., `/uploads/`, `/storage/`)
-- [ ] Decide whether to commit lock files (see comments in file)
-
-### 3. **.claude/*.md files** (Optional)
-
-Review and customize based on your needs:
-
-- [ ] **security.md** - Add project-specific security requirements
-- [ ] **testing.md** - Add your testing framework specifics (Jest, pytest, PHPUnit, etc.)
-- [ ] **api-design.md** - Adjust API response format conventions
-- [ ] **structure.md** - Update directory structure examples to match your stack
-- [ ] **database.md** - Add ORM/query builder specifics (Prisma, SQLAlchemy, Eloquent, etc.)
-- [ ] **standards.md** - Add team-specific code standards
-
-### 4. **README.md** (Replace)
-
-- [ ] Replace this README with your actual project README
-- [ ] Consider keeping a link to this template in your project docs
-
-### 5. **Install URLs** (If you forked this template)
-
-- [ ] Update install.sh with your GitHub username
-- [ ] Update README installation commands with your repository URL
-
----
-
-## 🚀 How It Works
-
-### Claude Code Integration
+## How It Works
 
 **CLAUDE.md is automatically loaded by Claude Code on every conversation.**
 
-When you start Claude Code in your project directory, it:
-1. **Automatically finds and reads** `CLAUDE.md` in your project root
-2. **Imports all referenced files** using `@.claude/*.md` syntax
-3. **Loads everything into Claude's context** before responding to you
+When you start Claude Code in your project:
+1. Claude finds `CLAUDE.md` in project root
+2. Imports files via `@.claude/*.md` syntax
+3. Follows these guidelines automatically
 
-This means Claude will **always follow these guidelines** without you needing to remind it.
+**You never need to:**
+- Paste guidelines into chat
+- Remind Claude about rules
+- Reference files manually
 
-### The Import Syntax
+---
 
-In CLAUDE.md, this syntax:
+## Features
+
+### Git Workflow
+- GitHub issue-driven development
+- Feature branch workflow with squash merging
+- Commit message conventions (TWO workflows: branch vs main)
+
+### Security (OWASP ASVS-based)
+- Input validation & injection prevention (SQL, XSS, Command, XXE)
+- Authentication & session management
+- HTTP security headers (with Apache/Nginx/Express examples)
+- Rate limiting with specific limits
+
+### Code Quality
+- Testing requirements (80% coverage, regression testing)
+- Project structure conventions (React/Node, Laravel, Django examples)
+- API design standards (RESTful, status codes, pagination)
+- Database migration procedures
+
+---
+
+## Custom Commands (Slash Commands)
+
+Optional slash commands for Claude Code:
+
+| Command | Description |
+|---------|-------------|
+| `/analyze <target>` | Deep analysis of code, components, or problems |
+| `/research <topic>` | Web research using Playwright browser |
+| `/update-project` | Git pull, migrations, dependency updates |
+
+See `.commands/README.md` for installation instructions.
+
+---
+
+## Customization Checklist
+
+After installing, customize these files for your project:
+
+### CLAUDE.md (Required)
+
+- [ ] Update "Commands" section with your actual build/test/dev commands
+- [ ] Review File Placement table - match your project structure
+- [ ] Modify Critical Rules if you have project-specific requirements
+
+**Find and replace:**
+- `[YOUR_COMMANDS]` → Your actual commands
+
+### .gitignore (Review)
+
+- [ ] Review included ignores - remove what's not applicable
+- [ ] Add project-specific patterns (e.g., `/uploads/`, `/storage/`)
+- [ ] Decide on lock files (see comments in file)
+
+### .claude/*.md (Optional)
+
+- [ ] **security.md** - Add project-specific security requirements
+- [ ] **testing.md** - Add your test framework specifics (`[YOUR_TEST_COMMAND]`)
+- [ ] **api-design.md** - Adjust response format conventions
+- [ ] **structure.md** - Update examples to match your stack
+- [ ] **database.md** - Add ORM specifics (Prisma, Eloquent, etc.)
+- [ ] **standards.md** - Add team-specific code standards
+
+### Remove Unused Guidelines
+
+If not using a database:
 ```markdown
-@.claude/security.md
+# In CLAUDE.md, remove this line:
+@.claude/database.md
+```
+Then delete `.claude/database.md`.
+
+### Add Team-Specific Rules
+
+Add to CLAUDE.md:
+```markdown
+## Team Conventions
+
+- Use Prettier with 2-space indentation
+- Prefix private methods with underscore
 ```
 
-Tells Claude Code to **automatically read and include** that file's contents. All `.claude/*.md` files become part of Claude's instructions.
-
-### What Gets Loaded
-
-When Claude Code starts, it loads:
-1. Your main `CLAUDE.md` (~200 lines of workflow and critical rules)
-2. All imported files from `.claude/` directory (detailed guidelines):
-   - `security.md` - Security best practices
-   - `testing.md` - Testing requirements
-   - `api-design.md` - API standards
-   - `structure.md` - Project structure
-   - `database.md` - Database guidelines
-   - `standards.md` - Code quality rules
-
-**Total: ~51KB of context loaded automatically on every conversation.**
-
-### Technology-Agnostic Guidelines
-
-The guidelines focus on **principles and patterns** rather than specific frameworks:
-
-- **Security**: OWASP ASVS-based requirements (applies to all languages)
-- **Structure**: Conceptual organization (components, routes, models, utilities)
-- **Workflow**: Git/GitHub workflow (language-independent)
-
-**Examples** in guidelines use common stacks (Node.js/React, PHP, Python) to illustrate concepts, but the principles apply universally.
-
-### Modular Design
-
-Each `.claude/*.md` file focuses on a specific area:
-
-- Want strict security? Keep `security.md` as-is
-- Building an API? Customize `api-design.md`
-- No database? Remove `database.md` reference from CLAUDE.md
-
-Mix and match based on your project needs.
-
 ---
 
-## 📖 Usage Tips
+## FAQ
 
-### For New Projects
+### Why separate files instead of one big CLAUDE.md?
 
-1. Install template using Quick Start commands
-2. Complete Customization Checklist
-3. Initialize your project structure
-4. Commit everything: `git add . && git commit -m "Initial setup"`
+**Modularity.** You can:
+- Remove guidelines you don't need (e.g., database.md for static sites)
+- Update security guidelines without touching workflow rules
+- Keep CLAUDE.md focused on project-specific config
 
-### For Existing Projects
+### How much context does this use?
 
-1. Install template into existing repository
-2. Review each file carefully - merge with existing guidelines
-3. Don't blindly overwrite existing conventions
-4. Keep what works, adopt what improves
+~1,100 lines total. Claude Code handles this well. If you notice slowness, remove unused `.claude/*.md` files.
 
-### Working with Claude Code
+### Can I use this with other AI coding tools?
 
-**Claude automatically follows CLAUDE.md - no reminders needed!**
+The guidelines are written for Claude Code's `@import` syntax. Other tools may need the content pasted directly or adapted to their format.
 
-1. **Just start coding** - Claude has already read all your guidelines
-2. **Update guidelines live** - Press `#` key to edit CLAUDE.md during conversation
-3. **Test if it's working** - Ask Claude: "What are our commit message conventions?" (it should know)
-4. **Commit changes** - Update CLAUDE.md as you discover better patterns
-5. **Share with team** - Everyone gets the same consistent Claude behavior
+### Why no TypeScript/React/Laravel-specific rules?
 
-**Pro tips:**
-- If Claude isn't following a rule, make it more specific in CLAUDE.md
-- Add examples to guidelines - Claude learns better from examples
-- Use ALWAYS/NEVER for critical rules (Claude pays extra attention)
-- Keep CLAUDE.md under 200 lines, move details to `.claude/*.md`
+**Technology-agnostic by design.** The principles (security, testing, structure) apply to any stack. Stack-specific examples are included where helpful.
 
-### Team Collaboration
-
-1. Get team buy-in before adopting (review guidelines together)
-2. Customize for your team's workflow and standards
-3. Keep guidelines updated as practices evolve
-4. Use as onboarding documentation for new team members
-
----
-
-## 🛠️ Technology Examples
-
-While guidelines are technology-agnostic, here are examples of how they apply to different stacks:
-
-| Guideline | Node.js/Express | PHP/Laravel | Python/Django | Go | Rust/Actix |
-|-----------|----------------|-------------|---------------|-----|-----------|
-| **Parameterized Queries** | Prisma/TypeORM | Eloquent ORM | Django ORM | sqlx | diesel/sqlx |
-| **Password Hashing** | bcrypt/argon2 | password_hash() | bcrypt/Argon2 | bcrypt | argon2/bcrypt |
-| **CSRF Protection** | csurf middleware | Built-in | Built-in | Custom/middleware | actix-csrf |
-| **Input Validation** | zod/joi/yup | Form Requests | Django Forms | validator | validator |
-| **Environment Vars** | dotenv | vlucas/phpdotenv | python-decouple | godotenv | dotenv |
-
-**All follow the same principles** - only implementation differs.
-
----
-
-## 📚 Documentation Files
-
-- **README.md** (this file) - Template overview and comprehensive documentation
-- **GETTING_STARTED.md** - Quick start guide for first-time users (start here!)
-- **CLAUDE.md** - Main Claude Code configuration file (auto-loaded by Claude)
-- **GITHUB_SETUP_GUIDE.md** - GitHub CLI setup instructions
-- **.claude/*.md** - Modular guideline files (security, testing, API, etc.)
-
----
-
-## 🔄 Updating the Template
-
-To update this template in existing projects:
+### How do I update when the template improves?
 
 ```bash
 # Backup your customizations
 cp CLAUDE.md CLAUDE.md.backup
 cp -r .claude .claude.backup
 
-# Reinstall latest version
-curl -fsSL https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/project-starter-template/main/install.sh | bash
+# Reinstall
+curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
 
-# Manually merge your customizations back
-# (especially Common Commands section and project-specific rules)
-diff CLAUDE.md.backup CLAUDE.md
+# Merge back your Commands section and any custom rules
 ```
 
 ---
 
-## ❓ FAQ
+## Troubleshooting
 
-### How does Claude Code read these guidelines?
+### Claude isn't following a guideline
 
-**Automatically!** Claude Code looks for `CLAUDE.md` in your project root and loads it at the start of every conversation. The `@.claude/*.md` syntax imports additional files. You never need to manually paste or remind Claude about the guidelines.
+1. Make the rule more specific (add examples)
+2. Use stronger language (ALWAYS/NEVER)
+3. Move it to "Critical Rules Summary" section in CLAUDE.md
 
-### Will Claude always follow these rules?
+### Claude doesn't know about CLAUDE.md
 
-**Yes, but with caveats:**
-- Claude reads CLAUDE.md on **every new conversation** (each time you start Claude Code)
-- If you edit CLAUDE.md during a conversation, press `#` to reload it
-- More specific rules work better than vague ones
-- Examples help Claude understand what you want
-- Use **ALWAYS** and **NEVER** for critical rules (Claude pays extra attention to these)
+- Ensure CLAUDE.md is in project root (not a subdirectory)
+- File must be named exactly `CLAUDE.md` (case-sensitive)
+- You must be in the project directory when starting Claude Code
 
-### What if Claude ignores a guideline?
+### Changes not taking effect
 
-1. **Make it more specific** - Add an example showing what you want
-2. **Move it higher** - Put critical rules in the "Critical Rules Summary" section
-3. **Use stronger language** - "ALWAYS" and "NEVER" work better than "should"
-4. **Test it** - Ask Claude directly: "What are our security rules?" to verify it read them
+- Press `#` in Claude Code to reload CLAUDE.md
+- Changes apply automatically in new conversations
+- For imported files, Claude Code re-reads on each conversation
 
-### Can I use this without Claude Code?
+### Too slow / too much context
 
-**Partially.** CLAUDE.md is designed for Claude Code, but you can:
-- Use it as project documentation for your team
-- Share it with other AI coding assistants (they may not auto-load it though)
-- Adapt it for other workflows
-
-The `.claude/` directory structure and `@` import syntax are Claude Code specific features.
-
-### Do I need all the .claude/*.md files?
-
-**No!** Customize based on your project:
-- Building a simple tool? Remove `database.md` and `api-design.md`
-- No tests? Remove `testing.md` (though we recommend keeping it!)
-- Public website? Keep `security.md` and `accessibility` rules
-
-Just remove the `@.claude/filename.md` line from CLAUDE.md if you don't need it.
-
-### How do I verify Claude read the guidelines?
-
-Ask Claude directly:
-- "What are our commit message conventions?"
-- "What security rules should we follow?"
-- "Where should I place utility functions?"
-
-If Claude answers correctly citing your CLAUDE.md rules, it's working!
-
-### Can I use this in multiple projects?
-
-**Yes!** That's the point. Install in each project and customize per project:
-- Core rules stay the same (security, testing)
-- Project-specific rules differ (commands, structure)
-- Team benefits from consistent guidelines across projects
+- Remove unused `.claude/*.md` files
+- Simplify rules that are obvious (Claude already knows basic security)
+- Keep custom additions concise
 
 ---
 
-## 🤝 Contributing
+## Links
 
-This is a personal starter template, but feel free to:
-- Fork and customize for your own use
-- Suggest improvements via issues or pull requests
-- Create your own variants for specific stacks
+- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code)
+- [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
 
 ---
 
-## 📝 License
-
-Free to use in all your projects. No attribution needed.
-
----
-
-## 🔗 Useful Links
-
-- **Claude Code Documentation**: https://docs.claude.com/en/docs/claude-code
-- **OWASP ASVS**: https://owasp.org/www-project-application-security-verification-standard/
-- **GitHub CLI**: https://cli.github.com/
-
----
-
-## 💡 Philosophy
-
-This template follows these principles:
-
-1. **Start with good defaults** - Security and quality from day one
-2. **Technology-agnostic** - Focus on principles, not frameworks
-3. **Practical over perfect** - Guidelines you'll actually follow
-4. **Modular and customizable** - Take what you need, leave what you don't
-5. **AI-friendly** - Optimized for Claude Code and other AI assistants
-6. **Team-friendly** - Clear, documented, and collaborative
-
----
-
-**Made for developers who want to start projects the right way.**
-
-Last updated: 2025-11-22
+Free to use in all projects. No attribution needed.
