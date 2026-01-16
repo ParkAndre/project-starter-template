@@ -7,6 +7,9 @@ Custom slash commands for Claude Code. Invoke with `/command-name`.
 | Command | Trigger | Description |
 |---------|---------|-------------|
 | [analyze](analyze.md) | `/analyze <target>` | Deep analysis of code, components, or problems |
+| [commit](commit.md) | `/commit [message]` | Smart git commit with conventional message |
+| [merge](merge.md) | `/merge [issue]` | Squash merge branch to main, close issue |
+| [e2e](e2e.md) | `/e2e [test]` | Run Playwright end-to-end tests |
 | [research](research.md) | `/research <topic>` | Web research using Playwright browser |
 | [update-project](update-project.md) | `/update-project` | Git pull, migrations, dependencies |
 
@@ -21,9 +24,7 @@ Copy command files to your Claude commands folder:
 mkdir -p ~/.claude/commands
 
 # Copy commands
-cp .commands/analyze.md ~/.claude/commands/
-cp .commands/research.md ~/.claude/commands/
-cp .commands/update-project.md ~/.claude/commands/
+cp .commands/*.md ~/.claude/commands/
 ```
 
 Commands will be available in all projects.
@@ -42,6 +43,9 @@ Add to `.claude/settings.json`:
 {
   "commands": [
     ".commands/analyze.md",
+    ".commands/commit.md",
+    ".commands/merge.md",
+    ".commands/e2e.md",
     ".commands/research.md",
     ".commands/update-project.md"
   ]
@@ -54,9 +58,22 @@ Add to `.claude/settings.json`:
 - Works with any project
 - Uses Claude Code built-in tools (Read, Glob, Grep, Bash)
 
+### commit.md
+- Works with any git repository
+- Runs tests before committing (requires test setup)
+
+### merge.md
+- Works with any git repository
+- Requires GitHub CLI (`gh`) for issue closing
+- Runs tests before merging
+
+### e2e.md
+- Requires **Playwright** installed: `bun add -d @playwright/test`
+- Initialize: `bunx playwright install`
+
 ### research.md
 - Requires **Playwright MCP server** installed
-- Install: `npx @anthropic-ai/claude-code-mcp add playwright`
+- Install: `bunx @anthropic-ai/claude-code-mcp add playwright`
 - Without Playwright, use built-in `WebSearch` tool instead
 
 ### update-project.md

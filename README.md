@@ -29,7 +29,7 @@ cd existing-project
 curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
 
 # Commit
-git add CLAUDE.md .claude/ .commands/ .gitignore
+git add CLAUDE.md .claude/ .commands/ .husky/ .gitignore
 git commit -m "Add project starter template and guidelines"
 ```
 
@@ -44,24 +44,31 @@ If Claude answers correctly with the TWO workflow explanation, it's working.
 ## What's Included
 
 ```
-CLAUDE.md                  # Main config (~260 lines)
-.gitignore                 # Comprehensive starter template
+CLAUDE.md                      # Main config
+CLAUDE.local.md.example        # Personal notes template (gitignored)
+.gitignore                     # Comprehensive starter template
 .claude/
-├── security.md            # Security guidelines (~340 lines, OWASP-based)
-├── testing.md             # Testing requirements (~190 lines)
-├── api-design.md          # API & logging standards (~120 lines)
-├── structure.md           # Project structure conventions (~76 lines)
-├── database.md            # Database & migration guidelines (~72 lines)
-├── standards.md           # Code quality rules (~65 lines)
-└── issue-creation.md      # Issue writing guide (~183 lines)
+├── security.md                # Security guidelines (OWASP-based)
+├── testing.md                 # TDD workflow & test requirements
+├── api-design.md              # API & logging standards
+├── structure.md               # Project structure conventions
+├── database.md                # Database & migration guidelines
+├── standards.md               # Code quality rules
+├── issue-creation.md          # Issue writing guide
+└── settings.json.example      # Hooks configuration template
 .commands/
-├── README.md              # Commands installation guide
-├── analyze.md             # /analyze - code and system analysis
-├── research.md            # /research - web research with Playwright
-└── update-project.md      # /update-project - git pull, migrations, deps
+├── README.md                  # Commands installation guide
+├── analyze.md                 # /analyze - code and system analysis
+├── research.md                # /research - web research with Playwright
+├── update-project.md          # /update-project - git pull, migrations, deps
+├── commit.md                  # /commit - smart git commit
+├── merge.md                   # /merge - squash merge to main
+└── e2e.md                     # /e2e - run Playwright tests
+.husky/
+└── pre-commit.example         # Git pre-commit hook template
 ```
 
-**Total: ~1,300 lines of guidelines**
+**Total: ~2,000 lines of guidelines**
 
 ---
 
@@ -104,15 +111,63 @@ When you start Claude Code in your project:
 
 ## Custom Commands (Slash Commands)
 
-Optional slash commands for Claude Code:
+Slash commands for Claude Code:
 
 | Command | Description |
 |---------|-------------|
 | `/analyze <target>` | Deep analysis of code, components, or problems |
+| `/commit [message]` | Smart git commit with conventional message |
+| `/merge [issue]` | Squash merge branch to main, close issue |
+| `/e2e [test]` | Run Playwright end-to-end tests |
 | `/research <topic>` | Web research using Playwright browser |
 | `/update-project` | Git pull, migrations, dependency updates |
 
 See `.commands/README.md` for installation instructions.
+
+---
+
+## Automation (Hooks & Husky)
+
+### Claude Code Hooks
+
+Hooks run automatically during Claude's operations:
+
+```bash
+# Copy template and customize
+cp .claude/settings.json.example .claude/settings.json
+```
+
+**Included hooks:**
+- Auto-format `.ts/.js` files after edit (Prettier)
+- Block writes to sensitive files (`.env`, `.pem`, `.key`)
+- Run tests when test files are modified
+
+### Git Pre-commit (Husky)
+
+Tests run automatically before every commit:
+
+```bash
+# Setup Husky
+bun add -d husky
+bunx husky init
+cp .husky/pre-commit.example .husky/pre-commit
+chmod +x .husky/pre-commit
+```
+
+**Pre-commit checks:**
+- Lint staged files
+- Run tests
+- Type check (TypeScript)
+
+### Personal Notes (CLAUDE.local.md)
+
+For personal preferences not committed to git:
+
+```bash
+cp CLAUDE.local.md.example CLAUDE.local.md
+```
+
+This file is gitignored - use for local environment notes, current focus, debugging.
 
 ---
 

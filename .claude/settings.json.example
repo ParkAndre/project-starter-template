@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(git:*)",
+      "Bash(bun:*)",
+      "Bash(bunx:*)",
+      "Bash(gh:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(*--force*)",
+      "Bash(*> /dev/*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.(env|pem|key|secret)$' && echo 'BLOCKED: Cannot write to sensitive files' && exit 2 || exit 0"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.(ts|tsx|js|jsx)$' && bunx prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+      },
+      {
+        "matcher": "Edit|Write",
+        "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.test\\.(ts|tsx|js|jsx)$' && bun test \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+      }
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "false"
+  }
+}

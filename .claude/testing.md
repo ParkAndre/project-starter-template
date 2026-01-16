@@ -17,59 +17,133 @@ Tests ensure that:
 
 ---
 
-## Test-First Workflow
+## Issue → Test → Code Flow
 
-Before writing code, you MUST:
+Every acceptance criteria (AC) in an issue becomes a test:
 
-1. Extract requirements from issue
-2. Write **Test Plan** in your reply:
-   ```
-   Test Plan:
-   - Normal behavior: [what should work]
-   - Edge case: [boundary conditions]
-   - Error scenario: [failure handling]
-   - Regression tests: [existing behavior that must still work]
-   ```
-3. Write tests BEFORE implementation
-4. Follow Red-Green-Refactor:
-   - Write failing test (Red)
-   - Implement minimal code to pass (Green)
-   - Refactor while keeping tests green
+```
+Issue #42: User can reset password
+├── AC1: User receives reset email → test_reset_email_sent()
+├── AC2: Link expires after 1 hour → test_reset_link_expiration()
+└── AC3: Password must be 8+ chars → test_password_validation()
+```
+
+**NEVER write code without a corresponding test from an AC.**
 
 ---
 
-## Writing Real Tests (No Fake Green)
+## TDD Workflow (Red-Green-Refactor)
 
-**You MUST NOT:**
-- Write tests that assert constants: `expect(true).toBe(true)`
-- Assert manually set values without real logic
-- Over-mock to bypass actual behavior
+### Step 1: Write Test First
 
-**Example of BAD test:**
-```javascript
-// ❌ BAD - Doesn't test real behavior
-test('user login works', () => {
+From the issue AC, write the test:
+
+```typescript
+// ❌ Test does not exist yet
+// ✅ Write it BEFORE the implementation
+
+test('reset link expires after 1 hour', async () => {
+  const link = await createResetLink('user@test.com');
+
+  // Simulate 61 minutes passing
+  vi.advanceTimersByTime(61 * 60 * 1000);
+
+  const result = await validateResetLink(link.token);
+  expect(result.valid).toBe(false);
+  expect(result.error).toBe('LINK_EXPIRED');
+});
+```
+
+### Step 2: Run Test → Must Be RED
+
+```bash
+bun test reset-link.test.ts
+```
+
+**Expected:** Test FAILS because implementation doesn't exist.
+
+**If test passes without implementation → TEST IS FAKE. Rewrite it.**
+
+### Step 3: Write Minimal Code
+
+Write just enough code to make the test pass:
+
+```typescript
+// Implementation in reset-link.ts
+export async function validateResetLink(token: string) {
+  const link = await db.resetLinks.findByToken(token);
+
+  const hourAgo = Date.now() - (60 * 60 * 1000);
+  if (link.createdAt < hourAgo) {
+    return { valid: false, error: 'LINK_EXPIRED' };
+  }
+
+  return { valid: true };
+}
+```
+
+### Step 4: Run Test → Must Be GREEN
+
+```bash
+bun test reset-link.test.ts
+```
+
+**Expected:** Test PASSES.
+
+### Step 5: Refactor (Optional)
+
+Improve code quality while keeping tests green.
+
+---
+
+## Test Validation Checklist
+
+Before marking tests as complete, verify:
+
+### 1. The "Comment-Out Test"
+
+Comment out the implementation → test MUST fail.
+
+```typescript
+// export async function validateResetLink(token) { ... }
+export async function validateResetLink(token) {
+  return { valid: true }; // Broken implementation
+}
+```
+
+If test still passes → test is fake.
+
+### 2. Assertion Quality
+
+Each test must have **meaningful assertions**:
+
+```typescript
+// ❌ BAD - No real assertion
+test('login works', () => {
+  expect(true).toBe(true);
+});
+
+// ❌ BAD - Tests a hardcoded value
+test('login works', () => {
   const result = { success: true };
   expect(result.success).toBe(true);
 });
-```
 
-**Example of GOOD test:**
-```javascript
-// ✅ GOOD - Tests actual login logic
-test('user login succeeds with valid credentials', async () => {
-  const result = await login('user@example.com', 'correctPassword');
+// ✅ GOOD - Tests actual behavior
+test('login returns token for valid credentials', async () => {
+  const result = await login('user@test.com', 'ValidPass123');
   expect(result.success).toBe(true);
-  expect(result.user).toBeDefined();
   expect(result.token).toBeDefined();
+  expect(result.token.length).toBeGreaterThan(20);
 });
 ```
 
-**Mocks must be meaningful:**
-- Mock external dependencies (network, database, third-party)
-- System under test MUST execute real logic
-- Test MUST fail if implementation is wrong
-- NEVER mock the function you're testing
+### 3. Edge Cases Covered
+
+For each AC, also test:
+- Invalid input
+- Boundary values
+- Error conditions
 
 ---
 
@@ -134,14 +208,14 @@ test('user login succeeds with valid credentials', async () => {
 
 Task is complete ONLY when ALL true:
 
-1. ✅ Requested behavior implemented
-2. ✅ Test Plan documented (including regression tests)
-3. ✅ Tests cover: new behavior, edge cases, error conditions, regressions
-4. ✅ Appropriate test mix (unit, integration, E2E)
+1. ✅ Each AC has a corresponding test
+2. ✅ Tests were written BEFORE implementation
+3. ✅ Tests failed initially (Red), then passed (Green)
+4. ✅ Tests cover edge cases and error conditions
 5. ✅ Tests are real (would fail if code broken)
-6. ✅ All tests pass: `[YOUR_TEST_COMMAND]`
+6. ✅ All tests pass: `bun test`
 7. ✅ Coverage meets threshold (80%+ new code)
-8. ✅ No regressions
+8. ✅ No regressions in existing tests
 
 ---
 
@@ -164,25 +238,41 @@ NEVER delete/weaken tests to force green status.
 ## Commands
 
 ```bash
-# Replace with your project commands
-[YOUR_TEST_COMMAND]        # Run tests
-[YOUR_COVERAGE_COMMAND]    # Run with coverage
+# Run all tests
+bun test
+
+# Run specific test file
+bun test path/to/file.test.ts
+
+# Run with coverage
+bun test --coverage
+
+# Run in watch mode
+bun test --watch
+
+# Run E2E tests (Playwright)
+bunx playwright test
 ```
 
 ---
 
-## Pre-commit Hooks (Recommended)
+## Pre-commit Hooks (Husky)
 
-Set up hooks to run tests before every commit:
+Tests run automatically before every commit:
 
-**Node.js (Husky):**
 ```bash
-npm install --save-dev husky lint-staged
-npx husky install
-npx husky add .husky/pre-commit "npx lint-staged"
+# Install Husky
+bun add -d husky
+bunx husky init
+
+# Add pre-commit hook
+echo "bun test --bail" > .husky/pre-commit
+chmod +x .husky/pre-commit
 ```
 
 **Benefits:**
 - Prevents committing without tests
 - Catches failures before push
 - Enforces quality standards
+
+See `.husky/pre-commit.example` for full example.

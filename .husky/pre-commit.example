@@ -1,0 +1,19 @@
+#!/bin/sh
+# Husky pre-commit hook example
+# Copy to .husky/pre-commit and make executable: chmod +x .husky/pre-commit
+
+echo "🔍 Running pre-commit checks..."
+
+# Run linter on staged files
+echo "📝 Linting..."
+bunx lint-staged
+
+# Run tests related to changed files
+echo "🧪 Testing..."
+bun test --bail
+
+# Type check (TypeScript projects)
+echo "📋 Type checking..."
+bunx tsc --noEmit
+
+echo "✅ All pre-commit checks passed!"

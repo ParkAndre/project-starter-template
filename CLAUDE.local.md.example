@@ -1,0 +1,36 @@
+# CLAUDE.local.md - Personal Project Notes
+
+> This file is gitignored. Use it for personal preferences and temporary notes.
+> Copy this to `CLAUDE.local.md` and customize.
+
+## My Preferences
+
+- I prefer [verbose/concise] explanations
+- Always ask before [specific action]
+- My timezone: [UTC+X]
+
+## Current Focus
+
+- Working on: [feature/issue description]
+- Branch: [branch-name]
+- Issue: #[number]
+
+## Local Environment
+
+- Dev server: http://localhost:[port]
+- Database: [local connection details - NEVER commit these]
+- API keys location: [path to local .env]
+
+## Temporary Notes
+
+- [ ] TODO: [something to remember]
+- [ ] Check: [something to verify]
+
+## Debugging Notes
+
+- Last error: [description]
+- Attempted fixes: [what was tried]
+
+---
+
+Remember: This file is for YOUR eyes only. It won't be committed to git.
