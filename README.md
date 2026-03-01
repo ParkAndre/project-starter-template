@@ -55,7 +55,15 @@ CLAUDE.local.md.example        # Personal notes template (gitignored)
 ├── database.md                # Database & migration guidelines
 ├── standards.md               # Code quality rules
 ├── issue-creation.md          # Issue writing guide
-└── settings.json.example      # Hooks configuration template
+├── settings.json.example      # Hooks configuration template
+└── commands/
+    ├── review.md              # /review - brutal code review
+    ├── verify.md              # /verify - pre-PR quality gate
+    ├── security-scan.md       # /security-scan - security analysis
+    ├── tdd.md                 # /tdd - guided TDD workflow
+    ├── fix-issue.md           # /fix-issue - issue to merge workflow
+    ├── refactor.md            # /refactor - safe dead code removal
+    └── catchup.md             # /catchup - branch context summary
 .commands/
 ├── README.md                  # Commands installation guide
 ├── analyze.md                 # /analyze - code and system analysis
@@ -68,7 +76,7 @@ CLAUDE.local.md.example        # Personal notes template (gitignored)
 └── pre-commit.example         # Git pre-commit hook template
 ```
 
-**Total: ~2,000 lines of guidelines**
+**Total: ~2,500 lines of guidelines and commands**
 
 ---
 
@@ -121,8 +129,16 @@ Slash commands for Claude Code:
 | `/e2e [test]` | Run Playwright end-to-end tests |
 | `/research <topic>` | Web research using Playwright browser |
 | `/update-project` | Git pull, migrations, dependency updates |
+| `/review` | Brutally honest code review with parallel agents |
+| `/verify [mode]` | Pre-PR quality gate (lint, tests, build, secrets) |
+| `/security-scan` | Security analysis of changed code (data flow tracing) |
+| `/tdd <issue>` | Guided TDD with RED-GREEN-REFACTOR enforcement |
+| `/fix-issue <number>` | End-to-end issue implementation workflow |
+| `/refactor [path]` | Safe, incremental dead code removal |
+| `/catchup` | Branch context summary (read-only) |
 
-See `.commands/README.md` for installation instructions.
+See `.commands/README.md` for installation instructions (`.commands/` commands).
+Project commands in `.claude/commands/` are loaded automatically by Claude Code.
 
 ---
 

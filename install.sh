@@ -23,6 +23,7 @@ echo -e "${BLUE}======================================${NC}\n"
 # Create directories
 echo -e "${YELLOW}Creating directories...${NC}"
 mkdir -p .claude
+mkdir -p .claude/commands
 mkdir -p .commands
 mkdir -p .husky
 
@@ -41,6 +42,13 @@ files=(
     ".claude/standards.md"
     ".claude/issue-creation.md"
     ".claude/settings.json.example"
+    ".claude/commands/review.md"
+    ".claude/commands/verify.md"
+    ".claude/commands/security-scan.md"
+    ".claude/commands/tdd.md"
+    ".claude/commands/fix-issue.md"
+    ".claude/commands/refactor.md"
+    ".claude/commands/catchup.md"
     ".commands/README.md"
     ".commands/analyze.md"
     ".commands/research.md"
