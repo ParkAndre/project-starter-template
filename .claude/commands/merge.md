@@ -1,7 +1,7 @@
 ---
 description: Squash merge current branch to main and close issue
 argument-hint: [issue-number or leave empty to detect from branch]
-allowed-tools: [Bash(git:*), Bash(gh:*), Bash(bun:*)]
+allowed-tools: [Bash(git:*), Bash(gh:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Glob]
 ---
 
 # Squash Merge to Main
@@ -13,10 +13,15 @@ Merge current feature branch to main using squash merge.
 1. **Verify not on main**: `git branch --show-current`
    - If on main → STOP and warn user
 
-2. **Run all tests**: `bun test`
+2. **Run all tests**: Detect test runner from project config and run:
+   - `package.json` → check scripts for test command (`npm test`, `bun test`, etc.)
+   - `pytest.ini` / `pyproject.toml` → `pytest`
+   - `phpunit.xml` → `vendor/bin/phpunit`
+   - `go.mod` → `go test ./...`
+   - `Cargo.toml` → `cargo test`
    - If any fail → STOP, do not merge
 
-3. **Run linter**: `bun run lint` (if available)
+3. **Run linter**: Detect linter from project config and run if available
    - Must pass
 
 4. **Check for uncommitted changes**: `git status`

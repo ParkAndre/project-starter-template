@@ -164,17 +164,14 @@ ENV/
 
 # PHP
 vendor/
-composer.lock  # Uncomment if you want to version lock file
 
 # Ruby
-Gemfile.lock  # Uncomment if you want to version lock file
 
 # Go
 /vendor/
 
 # Rust
 target/
-Cargo.lock  # Uncomment if you want to version lock file
 
 # ============================================
 # Build Output & Compiled Files

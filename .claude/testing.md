@@ -57,7 +57,9 @@ test('reset link expires after 1 hour', async () => {
 ### Step 2: Run Test → Must Be RED
 
 ```bash
-bun test reset-link.test.ts
+# Run with your project's test runner:
+# npm test / bun test / pytest / vendor/bin/phpunit / go test / cargo test
+[YOUR_TEST_COMMAND] reset-link.test.ts
 ```
 
 **Expected:** Test FAILS because implementation doesn't exist.
@@ -85,7 +87,7 @@ export async function validateResetLink(token: string) {
 ### Step 4: Run Test → Must Be GREEN
 
 ```bash
-bun test reset-link.test.ts
+[YOUR_TEST_COMMAND] reset-link.test.ts
 ```
 
 **Expected:** Test PASSES.
@@ -213,7 +215,7 @@ Task is complete ONLY when ALL true:
 3. ✅ Tests failed initially (Red), then passed (Green)
 4. ✅ Tests cover edge cases and error conditions
 5. ✅ Tests are real (would fail if code broken)
-6. ✅ All tests pass: `bun test`
+6. ✅ All tests pass: `[YOUR_TEST_COMMAND]`
 7. ✅ Coverage meets threshold (80%+ new code)
 8. ✅ No regressions in existing tests
 
@@ -238,36 +240,72 @@ NEVER delete/weaken tests to force green status.
 ## Commands
 
 ```bash
-# Run all tests
-bun test
+# [YOUR_TEST_COMMAND] - Replace with your actual test commands
 
-# Run specific test file
-bun test path/to/file.test.ts
+# Node.js (Bun):
+# bun test                          # Run all tests
+# bun test path/to/file.test.ts    # Run specific file
+# bun test --coverage               # With coverage
+# bunx playwright test              # E2E tests
 
-# Run with coverage
-bun test --coverage
+# Node.js (npm/Vitest/Jest):
+# npm test                          # Run all tests
+# npx vitest path/to/file.test.ts  # Run specific file
+# npx vitest --coverage             # With coverage
+# npx playwright test               # E2E tests
 
-# Run in watch mode
-bun test --watch
+# Python:
+# pytest                            # Run all tests
+# pytest path/to/test_file.py      # Run specific file
+# pytest --cov=src                  # With coverage
+# pytest -x                         # Stop on first failure
 
-# Run E2E tests (Playwright)
-bunx playwright test
+# PHP:
+# vendor/bin/phpunit                # Run all tests
+# vendor/bin/phpunit tests/Feature  # Run specific directory
+# vendor/bin/phpunit --coverage-text # With coverage
+
+# Go:
+# go test ./...                     # Run all tests
+# go test ./pkg/...                 # Run specific package
+# go test -cover ./...              # With coverage
+# go test -race ./...               # With race detector
+
+# Rust:
+# cargo test                        # Run all tests
+# cargo test test_name              # Run specific test
+# cargo tarpaulin                   # With coverage (requires tarpaulin)
 ```
 
 ---
 
-## Pre-commit Hooks (Husky)
+## Pre-commit Hooks
 
-Tests run automatically before every commit:
+Tests run automatically before every commit using git hooks:
 
+**Node.js (Husky):**
 ```bash
-# Install Husky
-bun add -d husky
-bunx husky init
+# Install and initialize
+npm install -D husky    # or: bun add -d husky
+npx husky init          # or: bunx husky init
 
 # Add pre-commit hook
-echo "bun test --bail" > .husky/pre-commit
+cp .husky/pre-commit.example .husky/pre-commit
 chmod +x .husky/pre-commit
+```
+
+**Python (pre-commit):**
+```bash
+pip install pre-commit
+pre-commit install
+# Configure in .pre-commit-config.yaml
+```
+
+**General (git hooks):**
+```bash
+# Create hook directly
+echo '#!/bin/sh\n[YOUR_TEST_COMMAND] --bail' > .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
 ```
 
 **Benefits:**

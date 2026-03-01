@@ -250,7 +250,7 @@ migrations/           # Database migrations
 **NEVER modify without explicit approval:**
 - Database migration files (once committed)
 - `.github/workflows/*` (CI/CD configs)
-- `package-lock.json` or `bun.lock` (unless updating deps)
+- Lock files: `package-lock.json`, `bun.lock`, `yarn.lock`, `pnpm-lock.yaml`, `composer.lock`, `Gemfile.lock`, `Cargo.lock`, `poetry.lock`, `Pipfile.lock` (unless updating deps)
 
 **ALWAYS ask before:**
 - Changing authentication/authorization logic

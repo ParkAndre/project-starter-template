@@ -1,19 +1,85 @@
 #!/bin/sh
 # Husky pre-commit hook example
 # Copy to .husky/pre-commit and make executable: chmod +x .husky/pre-commit
+#
+# Uncomment the section matching your tech stack.
 
-echo "🔍 Running pre-commit checks..."
+echo "Running pre-commit checks..."
 
-# Run linter on staged files
-echo "📝 Linting..."
-bunx lint-staged
+# ============================================
+# Node.js / TypeScript (npm)
+# ============================================
+# echo "Linting..."
+# npx lint-staged
+# echo "Testing..."
+# npm test -- --bail
+# echo "Type checking..."
+# npx tsc --noEmit
 
-# Run tests related to changed files
-echo "🧪 Testing..."
-bun test --bail
+# ============================================
+# Node.js / TypeScript (Bun)
+# ============================================
+# echo "Linting..."
+# bunx lint-staged
+# echo "Testing..."
+# bun test --bail
+# echo "Type checking..."
+# bunx tsc --noEmit
 
-# Type check (TypeScript projects)
-echo "📋 Type checking..."
-bunx tsc --noEmit
+# ============================================
+# Node.js / TypeScript (Yarn)
+# ============================================
+# echo "Linting..."
+# yarn lint-staged
+# echo "Testing..."
+# yarn test --bail
+# echo "Type checking..."
+# yarn tsc --noEmit
 
-echo "✅ All pre-commit checks passed!"
+# ============================================
+# Node.js / TypeScript (pnpm)
+# ============================================
+# echo "Linting..."
+# pnpm exec lint-staged
+# echo "Testing..."
+# pnpm test --bail
+# echo "Type checking..."
+# pnpm exec tsc --noEmit
+
+# ============================================
+# Python
+# ============================================
+# echo "Linting..."
+# ruff check .
+# echo "Formatting..."
+# ruff format --check .
+# echo "Testing..."
+# pytest -x --tb=short
+
+# ============================================
+# PHP
+# ============================================
+# echo "Linting..."
+# vendor/bin/phpcs --standard=PSR12 src/
+# echo "Testing..."
+# vendor/bin/phpunit --stop-on-failure
+
+# ============================================
+# Go
+# ============================================
+# echo "Linting..."
+# golangci-lint run
+# echo "Testing..."
+# go test -race ./...
+
+# ============================================
+# Rust
+# ============================================
+# echo "Linting..."
+# cargo clippy -- -D warnings
+# echo "Formatting..."
+# cargo fmt -- --check
+# echo "Testing..."
+# cargo test
+
+echo "All pre-commit checks passed!"

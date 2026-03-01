@@ -1,63 +1,73 @@
 ---
 description: Run Playwright end-to-end tests
 argument-hint: [test-file, test-name, or "all"]
-allowed-tools: [Bash(bunx:*), Bash(bun:*), Read, Glob]
+allowed-tools: [Bash(npx:*), Bash(npm:*), Bash(bunx:*), Bash(bun:*), Bash(yarn:*), Bash(pnpm:*), Read, Glob]
 ---
 
 # Run E2E Tests (Playwright)
 
 Run end-to-end tests using Playwright: $ARGUMENTS
 
+## Detect Package Runner
+
+Determine the package runner by checking for lock files:
+- `bun.lockb` / `bun.lock` → `bunx`
+- `pnpm-lock.yaml` → `pnpm exec` or `pnpm dlx`
+- `yarn.lock` → `yarn` or `yarn dlx`
+- `package-lock.json` or default → `npx`
+
+Use the detected runner (`<runner>`) for all commands below.
+
 ## Determine What to Run
 
 1. **If $ARGUMENTS is empty or "all"**:
    ```bash
-   bunx playwright test
+   <runner> playwright test
    ```
 
 2. **If $ARGUMENTS is a file path**:
    ```bash
-   bunx playwright test $ARGUMENTS
+   <runner> playwright test $ARGUMENTS
    ```
 
 3. **If $ARGUMENTS is a test name pattern**:
    ```bash
-   bunx playwright test -g "$ARGUMENTS"
+   <runner> playwright test -g "$ARGUMENTS"
    ```
 
 ## Before Running
 
 1. **Check Playwright is installed**:
    ```bash
-   bunx playwright --version
+   <runner> playwright --version
    ```
-   If not installed, suggest: `bun add -d @playwright/test`
+   If not installed, suggest installing `@playwright/test` with the project's package manager.
 
 2. **Check if dev server needed**:
    - Look for `playwright.config.ts` webServer config
    - If configured, Playwright handles it
-   - If not, may need `bun run dev` in background
+   - If not, may need dev server running in background
 
 ## Running Tests
 
 ### Default (headless):
 ```bash
-bunx playwright test
+<runner> playwright test
 ```
 
 ### With UI (debugging):
 ```bash
-bunx playwright test --ui
+<runner> playwright test --ui
 ```
 
 ### Specific browser:
 ```bash
-bunx playwright test --project=chromium
+<runner> playwright test --project=chromium
 ```
 
 ### Show report after:
 ```bash
-bunx playwright show-report
+<runner> playwright show-report
 ```
 
 ## On Failure
@@ -71,12 +81,12 @@ bunx playwright show-report
 
 3. **Suggest debugging**:
    ```bash
-   bunx playwright test --debug
+   <runner> playwright test --debug
    ```
 
 4. **Offer to show trace**:
    ```bash
-   bunx playwright show-trace trace.zip
+   <runner> playwright show-trace trace.zip
    ```
 
 ## Output Format
@@ -84,7 +94,7 @@ bunx playwright show-report
 ```
 ## E2E Test Results
 
-**Command**: `bunx playwright test [args]`
+**Command**: `<runner> playwright test [args]`
 **Status**: ✅ Passed / ❌ Failed
 
 ### Summary

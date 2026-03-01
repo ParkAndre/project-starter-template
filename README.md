@@ -29,7 +29,7 @@ cd existing-project
 curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
 
 # Commit
-git add CLAUDE.md .claude/ .commands/ .husky/ .gitignore
+git add CLAUDE.md .claude/ .husky/ .gitignore
 git commit -m "Add project starter template and guidelines"
 ```
 
@@ -44,39 +44,38 @@ If Claude answers correctly with the TWO workflow explanation, it's working.
 ## What's Included
 
 ```
-CLAUDE.md                      # Main config
-CLAUDE.local.md.example        # Personal notes template (gitignored)
-.gitignore                     # Comprehensive starter template
+CLAUDE.md                          # Main config
+CLAUDE.local.md.example            # Personal notes template (gitignored)
+.gitignore                         # Comprehensive starter template
 .claude/
-├── security.md                # Security guidelines (OWASP-based)
-├── testing.md                 # TDD workflow & test requirements
-├── api-design.md              # API & logging standards
-├── structure.md               # Project structure conventions
-├── database.md                # Database & migration guidelines
-├── standards.md               # Code quality rules
-├── issue-creation.md          # Issue writing guide
-├── settings.json.example      # Hooks configuration template
+├── security.md                    # Security guidelines (OWASP-based)
+├── testing.md                     # TDD workflow & test requirements
+├── api-design.md                  # API & logging standards
+├── structure.md                   # Project structure conventions
+├── database.md                    # Database & migration guidelines
+├── standards.md                   # Code quality rules
+├── issue-creation.md              # Issue writing guide
+├── settings.json.example          # Hooks configuration template (generic)
+├── settings-hooks-examples.md     # Per-stack hook & permission examples
 └── commands/
-    ├── review.md              # /review - brutal code review
-    ├── verify.md              # /verify - pre-PR quality gate
-    ├── security-scan.md       # /security-scan - security analysis
-    ├── tdd.md                 # /tdd - guided TDD workflow
-    ├── fix-issue.md           # /fix-issue - issue to merge workflow
-    ├── refactor.md            # /refactor - safe dead code removal
-    └── catchup.md             # /catchup - branch context summary
-.commands/
-├── README.md                  # Commands installation guide
-├── analyze.md                 # /analyze - code and system analysis
-├── research.md                # /research - web research with Playwright
-├── update-project.md          # /update-project - git pull, migrations, deps
-├── commit.md                  # /commit - smart git commit
-├── merge.md                   # /merge - squash merge to main
-└── e2e.md                     # /e2e - run Playwright tests
+    ├── review.md                  # /review - brutal code review
+    ├── verify.md                  # /verify - pre-PR quality gate
+    ├── security-scan.md           # /security-scan - security analysis
+    ├── tdd.md                     # /tdd - guided TDD workflow
+    ├── fix-issue.md               # /fix-issue - issue to merge workflow
+    ├── refactor.md                # /refactor - safe dead code removal
+    ├── catchup.md                 # /catchup - branch context summary
+    ├── analyze.md                 # /analyze - code and system analysis
+    ├── research.md                # /research - web research with Playwright
+    ├── update-project.md          # /update-project - git pull, migrations, deps
+    ├── commit.md                  # /commit - smart git commit
+    ├── merge.md                   # /merge - squash merge to main
+    └── e2e.md                     # /e2e - run Playwright tests
 .husky/
-└── pre-commit.example         # Git pre-commit hook template
+└── pre-commit.example             # Git pre-commit hook template (multi-stack)
 ```
 
-**Total: ~2,500 lines of guidelines and commands**
+**Total: ~2,800 lines of guidelines and commands**
 
 ---
 
@@ -119,7 +118,7 @@ When you start Claude Code in your project:
 
 ## Custom Commands (Slash Commands)
 
-Slash commands for Claude Code:
+All commands live in `.claude/commands/` and are loaded automatically by Claude Code.
 
 | Command | Description |
 |---------|-------------|
@@ -137,43 +136,86 @@ Slash commands for Claude Code:
 | `/refactor [path]` | Safe, incremental dead code removal |
 | `/catchup` | Branch context summary (read-only) |
 
-See `.commands/README.md` for installation instructions (`.commands/` commands).
-Project commands in `.claude/commands/` are loaded automatically by Claude Code.
+### Creating Custom Commands
+
+Command files use YAML frontmatter + Markdown:
+
+```markdown
+---
+description: Short description shown in /help
+argument-hint: <optional arguments>
+allowed-tools: [Tool1, Tool2, Bash(git:*)]
+---
+
+# Command Title
+
+Instructions for Claude to follow when this command is invoked.
+
+$ARGUMENTS will be replaced with user input after the command.
+```
+
+#### Frontmatter Options
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `description` | Yes | Shown in help and autocomplete |
+| `argument-hint` | No | Placeholder text for arguments |
+| `allowed-tools` | No | Tools the command can use (security) |
+| `name` | No | Override command name (default: filename) |
+
+#### Tool Patterns
+
+```yaml
+# Specific tools
+allowed-tools: [Read, Write, Glob]
+
+# Bash with command patterns
+allowed-tools: [Bash(git:*), Bash(npm:*)]
+
+# MCP tools
+allowed-tools: [mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot]
+```
 
 ---
 
-## Automation (Hooks & Husky)
+## Automation (Hooks & Pre-commit)
 
 ### Claude Code Hooks
 
 Hooks run automatically during Claude's operations:
 
 ```bash
-# Copy template and customize
+# Copy template and customize for your stack
 cp .claude/settings.json.example .claude/settings.json
 ```
 
-**Included hooks:**
-- Auto-format `.ts/.js` files after edit (Prettier)
-- Block writes to sensitive files (`.env`, `.pem`, `.key`)
-- Run tests when test files are modified
+See `.claude/settings-hooks-examples.md` for per-stack examples:
+- **Node.js/TS**: Prettier auto-format, auto-test
+- **Python**: Ruff format/lint, pytest auto-test
+- **PHP**: PHP CS Fixer, PHPUnit auto-test
+- **Go**: gofmt, auto-test
+- **Rust**: rustfmt
 
-### Git Pre-commit (Husky)
+The base template includes:
+- Block writes to sensitive files (`.env`, `.pem`, `.key`)
+
+### Git Pre-commit Hook
 
 Tests run automatically before every commit:
 
 ```bash
-# Setup Husky
-bun add -d husky
-bunx husky init
+# Copy and enable
 cp .husky/pre-commit.example .husky/pre-commit
 chmod +x .husky/pre-commit
+
+# Then uncomment your stack's section in .husky/pre-commit
 ```
 
-**Pre-commit checks:**
-- Lint staged files
-- Run tests
-- Type check (TypeScript)
+For Node.js projects using Husky:
+```bash
+npm install -D husky && npx husky init
+# or: bun add -d husky && bunx husky init
+```
 
 ### Personal Notes (CLAUDE.local.md)
 
@@ -204,12 +246,12 @@ After installing, customize these files for your project:
 
 - [ ] Review included ignores - remove what's not applicable
 - [ ] Add project-specific patterns (e.g., `/uploads/`, `/storage/`)
-- [ ] Decide on lock files (see comments in file)
+- [ ] Decide on lock files (see Optional section in file)
 
 ### .claude/*.md (Optional)
 
 - [ ] **security.md** - Add project-specific security requirements
-- [ ] **testing.md** - Add your test framework specifics (`[YOUR_TEST_COMMAND]`)
+- [ ] **testing.md** - Replace `[YOUR_TEST_COMMAND]` with your actual commands
 - [ ] **api-design.md** - Adjust response format conventions
 - [ ] **structure.md** - Update examples to match your stack
 - [ ] **database.md** - Add ORM specifics (Prisma, Eloquent, etc.)

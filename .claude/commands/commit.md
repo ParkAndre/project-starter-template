@@ -1,7 +1,7 @@
 ---
 description: Create a well-formatted git commit with conventional message
 argument-hint: [message or leave empty for auto-generate]
-allowed-tools: [Bash(git:*), Bash(bun:*), Read]
+allowed-tools: [Bash(git:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Glob]
 ---
 
 # Smart Commit
@@ -12,17 +12,28 @@ Create a git commit following project conventions.
 
 Before committing, verify:
 
-1. **Run tests**: `bun test`
+1. **Run tests**: Detect test runner from project config files and run appropriate command:
+   - `package.json` → check scripts for test command (`npm test`, `bun test`, etc.)
+   - `pytest.ini` / `pyproject.toml` / `setup.cfg` → `pytest`
+   - `phpunit.xml` → `vendor/bin/phpunit`
+   - `go.mod` → `go test ./...`
+   - `Cargo.toml` → `cargo test`
+   - `Makefile` → check for `test` target
    - If tests fail → FIX before committing
    - NEVER skip tests
 
-2. **Run linter**: `bun run lint` (if available)
+2. **Run linter**: Detect linter from project config files and run appropriate command:
+   - `package.json` → check scripts for lint command
+   - `pyproject.toml` with ruff/flake8 → `ruff check` / `flake8`
+   - `phpcs.xml` → `vendor/bin/phpcs`
+   - `go.mod` → `golangci-lint run` (if available)
+   - `Cargo.toml` → `cargo clippy`
    - Auto-fix what's possible
    - Manual fix the rest
 
 3. **Check for debug code**:
-   - No `console.log` (except error handling)
-   - No `debugger` statements
+   - No `console.log` / `print()` / `dd()` / `var_dump()` (except error handling)
+   - No `debugger` / `breakpoint()` / `binding.pry` statements
    - No commented-out code blocks
 
 ## Commit Process

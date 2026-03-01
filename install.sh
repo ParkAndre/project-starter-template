@@ -24,7 +24,6 @@ echo -e "${BLUE}======================================${NC}\n"
 echo -e "${YELLOW}Creating directories...${NC}"
 mkdir -p .claude
 mkdir -p .claude/commands
-mkdir -p .commands
 mkdir -p .husky
 
 # Download files
@@ -42,6 +41,7 @@ files=(
     ".claude/standards.md"
     ".claude/issue-creation.md"
     ".claude/settings.json.example"
+    ".claude/settings-hooks-examples.md"
     ".claude/commands/review.md"
     ".claude/commands/verify.md"
     ".claude/commands/security-scan.md"
@@ -49,13 +49,12 @@ files=(
     ".claude/commands/fix-issue.md"
     ".claude/commands/refactor.md"
     ".claude/commands/catchup.md"
-    ".commands/README.md"
-    ".commands/analyze.md"
-    ".commands/research.md"
-    ".commands/update-project.md"
-    ".commands/commit.md"
-    ".commands/merge.md"
-    ".commands/e2e.md"
+    ".claude/commands/analyze.md"
+    ".claude/commands/research.md"
+    ".claude/commands/update-project.md"
+    ".claude/commands/commit.md"
+    ".claude/commands/merge.md"
+    ".claude/commands/e2e.md"
     ".husky/pre-commit.example"
 )
 
@@ -91,10 +90,12 @@ echo -e "${BLUE}======================================${NC}\n"
 
 echo -e "${YELLOW}Next steps:${NC}"
 echo -e "  1. ${BLUE}CUSTOMIZE${NC} CLAUDE.md 'Commands' section with your project commands"
-echo -e "  2. ${BLUE}COPY${NC} .claude/settings.json.example to .claude/settings.json and customize hooks"
+echo -e "  2. ${BLUE}COPY${NC} .claude/settings.json.example to .claude/settings.json"
+echo -e "     Add your stack's permissions and hooks (see .claude/settings-hooks-examples.md)"
 echo -e "  3. ${BLUE}COPY${NC} CLAUDE.local.md.example to CLAUDE.local.md for personal notes"
-echo -e "  4. ${BLUE}SETUP HUSKY${NC}: bun add -d husky && bunx husky init && cp .husky/pre-commit.example .husky/pre-commit"
-echo -e "  5. ${BLUE}COMMIT${NC}: git add CLAUDE.md .claude/ .commands/ .husky/ .gitignore && git commit -m 'Add project guidelines'"
+echo -e "  4. ${BLUE}SETUP PRE-COMMIT${NC}: cp .husky/pre-commit.example .husky/pre-commit && chmod +x .husky/pre-commit"
+echo -e "     Then uncomment your stack's section in .husky/pre-commit"
+echo -e "  5. ${BLUE}COMMIT${NC}: git add CLAUDE.md .claude/ .husky/ .gitignore && git commit -m 'Add project guidelines'"
 echo -e "  6. ${BLUE}TEST${NC} it works - ask Claude: 'What are our commit message conventions?'\n"
 
 echo -e "${BLUE}Tip:${NC} Press ${YELLOW}#${NC} in Claude Code to quickly edit CLAUDE.md during conversation\n"
