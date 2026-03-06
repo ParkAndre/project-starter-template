@@ -12,7 +12,10 @@ When asked to change project source code:
 
 1. Ask: "Should we create a GitHub issue for this?"
 2. If yes:
-   - Create issue: `gh issue create --title "Title" --body "Description"`
+   - Draft the issue title and acceptance criteria in Estonian and show to user
+   - Wait for user approval or corrections
+   - Translate the approved draft to English
+   - Create issue: `gh issue create --title "Title" --body "Description"` (in English)
    - Create and checkout branch: `gh issue develop <issue-number> --checkout`
    - Implement and commit changes to branch
    - Ask: "Is there anything else you want to change, or should I squash merge this to main and close issue #XX?"

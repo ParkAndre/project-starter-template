@@ -171,6 +171,23 @@ Order so each stage unlocks the next:
 
 ---
 
+## Bilingual Workflow (Estonian → English)
+
+When creating issues, follow this flow:
+
+1. **Draft in Estonian** — Show the user the issue title and acceptance criteria in Estonian
+2. **Wait for approval** — Let the user review, correct, or approve the draft
+3. **Translate to English** — Once approved, translate the full issue to English
+4. **Push to GitHub** — Create the issue on GitHub in English only
+
+**Rules:**
+- The user reviews and edits in Estonian (their language)
+- GitHub always receives English content
+- Keep the same structure and meaning when translating
+- Do NOT push to GitHub before user approves the Estonian draft
+
+---
+
 ## Checklist Before Creating
 
 - [ ] Title follows correct format (user story or descriptive)
@@ -180,3 +197,5 @@ Order so each stage unlocks the next:
 - [ ] Not too big - PR-sized scope
 - [ ] Testing expectations included
 - [ ] Dependencies listed if any
+- [ ] User has approved the Estonian draft
+- [ ] English translation matches the approved draft
