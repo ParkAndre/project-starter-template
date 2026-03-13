@@ -55,10 +55,17 @@ files=(
     ".claude/commands/commit.md"
     ".claude/commands/merge.md"
     ".claude/commands/e2e.md"
+    ".claude/commands/update-readme.md"
     ".husky/pre-commit.example"
 )
 
 for file in "${files[@]}"; do
+    # Skip .gitignore if it already exists (don't overwrite project-specific ignores)
+    if [ "$file" = ".gitignore" ] && [ -f ".gitignore" ]; then
+        echo -e "  ${YELLOW}Skipping ${file} (already exists — not overwriting)${NC}"
+        continue
+    fi
+
     echo -e "  Downloading ${file}..."
     if command -v curl &> /dev/null; then
         curl -fsSL "${BASE_URL}/${file}" -o "${file}"

@@ -1,3 +1,9 @@
+---
+description: Safe, incremental dead code removal
+argument-hint: [path]
+allowed-tools: [Bash(git:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Edit, Glob, Grep]
+---
+
 # Refactor
 
 Systematic dead code removal and cleanup. Safe, incremental, test-verified.

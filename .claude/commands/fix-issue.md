@@ -1,3 +1,9 @@
+---
+description: End-to-end issue implementation workflow
+argument-hint: <issue-number>
+allowed-tools: [Bash(git:*), Bash(gh:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Write, Edit, Glob, Grep, Agent]
+---
+
 # Fix Issue
 
 End-to-end issue implementation following project workflow. Takes a GitHub issue from reading to squash merge.

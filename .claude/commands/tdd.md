@@ -1,3 +1,9 @@
+---
+description: Guided TDD with RED-GREEN-REFACTOR enforcement
+argument-hint: <issue-number or description>
+allowed-tools: [Bash(git:*), Bash(gh:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Write, Edit, Glob, Grep]
+---
+
 # TDD
 
 Guided Test-Driven Development. Enforces RED-GREEN-REFACTOR cycle one acceptance criterion at a time.

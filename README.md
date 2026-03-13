@@ -58,7 +58,7 @@ CLAUDE.local.md.example            # Personal notes template (gitignored)
 ├── settings.json.example          # Hooks configuration template (generic)
 ├── settings-hooks-examples.md     # Per-stack hook & permission examples
 └── commands/
-    ├── review.md                  # /review - brutal code review
+    ├── review.md                  # /review - thoughtful code review
     ├── verify.md                  # /verify - pre-PR quality gate
     ├── security-scan.md           # /security-scan - security analysis
     ├── tdd.md                     # /tdd - guided TDD workflow
@@ -70,12 +70,13 @@ CLAUDE.local.md.example            # Personal notes template (gitignored)
     ├── update-project.md          # /update-project - git pull, migrations, deps
     ├── commit.md                  # /commit - smart git commit
     ├── merge.md                   # /merge - squash merge to main
-    └── e2e.md                     # /e2e - run Playwright tests
+    ├── e2e.md                     # /e2e - run Playwright tests
+    └── update-readme.md           # /update-readme - validate & update README
 .husky/
 └── pre-commit.example             # Git pre-commit hook template (multi-stack)
 ```
 
-**Total: ~2,800 lines of guidelines and commands**
+**Total: ~3,600 lines of guidelines and commands**
 
 ---
 
@@ -128,13 +129,14 @@ All commands live in `.claude/commands/` and are loaded automatically by Claude 
 | `/e2e [test]` | Run Playwright end-to-end tests |
 | `/research <topic>` | Web research using Playwright browser |
 | `/update-project` | Git pull, migrations, dependency updates |
-| `/review` | Brutally honest code review with parallel agents |
+| `/review` | Thoughtful code review with parallel agents |
 | `/verify [mode]` | Pre-PR quality gate (lint, tests, build, secrets) |
 | `/security-scan` | Security analysis of changed code (data flow tracing) |
 | `/tdd <issue>` | Guided TDD with RED-GREEN-REFACTOR enforcement |
 | `/fix-issue <number>` | End-to-end issue implementation workflow |
 | `/refactor [path]` | Safe, incremental dead code removal |
 | `/catchup` | Branch context summary (read-only) |
+| `/update-readme` | Validate README against actual project state and fix drift |
 
 ### Creating Custom Commands
 
@@ -289,7 +291,7 @@ Add to CLAUDE.md:
 
 ### How much context does this use?
 
-~1,100 lines total. Claude Code handles this well. If you notice slowness, remove unused `.claude/*.md` files.
+~3,600 lines total. Claude Code handles this well. If you notice slowness, remove unused `.claude/*.md` files.
 
 ### Can I use this with other AI coding tools?
 

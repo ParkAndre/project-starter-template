@@ -177,7 +177,7 @@ Auto-format Rust files after edit:
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "Write|Edit",
         "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.(env|pem|key|secret)$' && echo 'BLOCKED: Cannot write to sensitive files' && exit 2 || exit 0"
       }
     ],
@@ -217,7 +217,7 @@ Auto-format Rust files after edit:
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "Write|Edit",
         "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.(env|pem|key|secret)$' && echo 'BLOCKED: Cannot write to sensitive files' && exit 2 || exit 0"
       }
     ],
@@ -257,7 +257,7 @@ Auto-format Rust files after edit:
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "Write|Edit",
         "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qE '\\.(env|pem|key|secret)$' && echo 'BLOCKED: Cannot write to sensitive files' && exit 2 || exit 0"
       }
     ],

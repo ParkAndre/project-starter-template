@@ -64,11 +64,9 @@ out/
 # Vim
 *.swp
 *.swo
-*~
 .*.sw[a-p]
 
 # Emacs
-*~
 \#*\#
 /.emacs.desktop
 /.emacs.desktop.lock
@@ -147,7 +145,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -178,9 +175,6 @@ target/
 # ============================================
 
 # Compiled output directories
-build/
-dist/
-out/
 .next/
 .nuxt/
 .output/
@@ -217,7 +211,7 @@ junit.xml
 # Other database files
 *.mdb
 *.accdb
-*.sql  # Be careful - you might want to version some SQL files (migrations)
+# *.sql  # Uncomment if you don't version SQL files (WARNING: this ignores migrations too)
 
 # ============================================
 # Package Manager Lock Files (Optional)
@@ -229,7 +223,8 @@ junit.xml
 # package-lock.json  # npm
 # yarn.lock          # Yarn
 # pnpm-lock.yaml     # pnpm
-# bun.lockb          # Bun
+# bun.lockb          # Bun (legacy binary format)
+# bun.lock           # Bun (current text format)
 # Pipfile.lock       # Python Pipenv
 # poetry.lock        # Python Poetry
 # Gemfile.lock       # Ruby

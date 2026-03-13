@@ -1,3 +1,8 @@
+---
+description: Branch context summary (read-only)
+allowed-tools: [Bash(git:*), Bash(gh:*), Read, Glob, Grep]
+---
+
 # Catchup
 
 Quick context summary for the current branch. Read-only — changes nothing.

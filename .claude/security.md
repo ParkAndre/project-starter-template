@@ -179,7 +179,7 @@ ini_set('session.cookie_samesite', 'Strict');
   - Node.js: `crypto.randomBytes(32).toString('hex')`
 - Store in session, embed in forms as hidden field
 - Validate server-side before processing
-- Use middleware: `csurf` (Express), Laravel/Symfony built-in
+- Use middleware: `csrf-csrf` or framework built-in CSRF protection (Express, Laravel, Symfony, Django)
 
 ---
 

@@ -8,6 +8,9 @@
 
 ### Issue-Driven Development
 
+Before starting a new task, check for uncommitted changes with `git status`.
+If there are uncommitted changes, ask the user if they want to commit or stash them first.
+
 When asked to change project source code:
 
 1. Ask: "Should we create a GitHub issue for this?"
@@ -69,14 +72,15 @@ Simple, descriptive messages while working on a feature branch. Commit frequentl
 ONLY when squash merging completed feature to main. Creates clean history and closes issue.
 
 **Format:**
-- Features: `As a [role] I [action] so that [benefit]\nCloses #XX`
-- Fixes: `Fix: [description]\nCloses #XX`
-- Refactor: `Refactor: [description]`
-- Style: `Style: [description]`
+- Features: `feat: description` or `As a [role] I [action] so that [benefit]`
+- Fixes: `fix: description`
+- Refactor: `refactor: description`
+- Style: `style: description`
+- Always include `Closes #XX` on separate line when resolving issues
 
 **Examples:**
 ```
-Fix: Return proper error message for unauthorized AJAX requests
+fix: return proper error message for unauthorized AJAX requests
 Closes #123
 
 - Changed empty array response to include 'Authorization required' message
@@ -84,7 +88,7 @@ Closes #123
 ```
 
 ```
-As a student I can see my learning outcomes
+feat: user can see learning outcomes
 Closes #80
 ```
 
@@ -142,7 +146,9 @@ Example: Don't say "Docker is running on port 3000" unless you ran `docker compo
 
 ## File Placement
 
-**General Structure (Technology-Agnostic)**
+See `@.claude/structure.md` for full directory organization, naming conventions, and stack-specific examples.
+
+**Quick reference:**
 
 | Component Type | Typical Location |
 |----------------|------------------|
@@ -151,69 +157,8 @@ Example: Don't say "Docker is running on port 3000" unless you ran `docker compo
 | Business Logic | `/src/services` or `/src/lib` |
 | Data Models | `/src/models` or `/src/entities` |
 | Utilities | `/src/utils` or `/src/helpers` |
-| Type Definitions | `/src/types` or `/src/interfaces` |
-| Middleware | `/src/middleware` |
-| Configuration | `/src/config` or `/config` |
 | Tests | Next to file or `/tests` |
-| Database Migrations | `/migrations` or `/db/migrations` |
-| Static Assets (bundled) | `/src/assets` |
 | Static Files (served) | `/public` or `/static` |
-
-**Stack-Specific Examples:**
-
-<details>
-<summary>React/Node.js</summary>
-
-```
-src/
-├── components/      # React components
-├── pages/          # Next.js pages or route components
-├── routes/         # Express routes (API)
-├── lib/            # Utilities and helpers
-├── models/         # Database models (Prisma, TypeORM)
-├── types/          # TypeScript types
-├── middleware/     # Express middleware
-├── hooks/          # Custom React hooks
-└── assets/         # Images, fonts
-public/             # Static files (favicon, robots.txt)
-```
-</details>
-
-<details>
-<summary>PHP/Laravel</summary>
-
-```
-app/
-├── Http/
-│   ├── Controllers/  # Request handlers
-│   └── Middleware/   # HTTP middleware
-├── Models/           # Eloquent models
-├── Services/         # Business logic
-└── View/             # View composers
-resources/
-├── views/            # Blade templates
-└── js/               # Frontend assets
-public/               # Publicly accessible files
-database/migrations/  # Database migrations
-```
-</details>
-
-<details>
-<summary>Python/Django</summary>
-
-```
-app_name/
-├── views.py          # Request handlers
-├── models.py         # Database models
-├── urls.py           # URL routing
-├── serializers.py    # API serializers
-├── services.py       # Business logic
-└── utils.py          # Helper functions
-templates/            # HTML templates
-static/               # Static files
-migrations/           # Database migrations
-```
-</details>
 
 ---
 
@@ -241,7 +186,7 @@ migrations/           # Database migrations
 - Design code to be modular (separate concerns, reusable components)
 
 ### Never
-- Commit directly to main
+- Push directly to main without going through the squash merge workflow
 - Include "Co-Authored-By: Claude" in commits
 - Store secrets in code
 - Modify database directly in production

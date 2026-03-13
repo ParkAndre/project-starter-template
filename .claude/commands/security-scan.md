@@ -1,3 +1,8 @@
+---
+description: Security analysis of changed code (data flow tracing)
+allowed-tools: [Bash(git:*), Read, Glob, Grep]
+---
+
 # Security Scan
 
 Deep security review of changed code. Complements `/review` with security-specific analysis.
