@@ -1,3 +1,8 @@
+---
+description: Validate README against actual project state and fix drift
+allowed-tools: [Read, Glob, Grep, Edit]
+---
+
 # Update README
 
 Validate README.md against actual project state and fix any drift between documentation and reality.

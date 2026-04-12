@@ -1,7 +1,7 @@
 ---
 description: Research information from the web using Playwright browser automation
 argument-hint: <search query or topic>
-allowed-tools: [mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_press_key, mcp__playwright__browser_wait_for, mcp__playwright__browser_tabs, mcp__playwright__browser_close]
+allowed-tools: [mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_press_key, mcp__playwright__browser_wait_for, mcp__playwright__browser_tabs]
 ---
 
 # Web Research Task
@@ -36,7 +36,15 @@ Use the Playwright MCP tools to research this topic by browsing the web. This ap
 - If a page requires interaction (clicking tabs, expanding sections), use browser_click
 - If a page has a search feature, use browser_type to search within the site
 - Wait for pages to load using browser_wait_for when necessary
-- Close the browser when research is complete using browser_close
+- **DO NOT close the browser** — keep the session alive for future research tasks
+- **Reuse existing browser session**: Before navigating, check if there's already an open browser tab using browser_tabs. If a session exists, continue using it instead of opening a new one
+
+### Captcha Handling
+
+- If you encounter a captcha, reCAPTCHA, or any human verification challenge, **wait for the user to solve it**
+- Use browser_wait_for with a reasonable timeout (e.g., 60 seconds) to wait for the captcha to be resolved
+- The user is watching the browser and will intervene manually when needed
+- After the captcha is solved, continue with the research task
 
 ### Output Format
 

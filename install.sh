@@ -36,7 +36,6 @@ files=(
     ".claude/security.md"
     ".claude/testing.md"
     ".claude/api-design.md"
-    ".claude/structure.md"
     ".claude/database.md"
     ".claude/standards.md"
     ".claude/issue-creation.md"

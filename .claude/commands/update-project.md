@@ -1,7 +1,6 @@
 ---
-name: update-project
 description: Updates project by stashing changes, pulling latest from remote, restoring stashed changes, running database migrations, and updating dependencies.
-allowed-tools: Bash(git:*), Bash(npm:*), Bash(bun:*), Bash(bunx:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(mysql:*), Bash(python3:*), Bash(pip:*), Bash(composer:*), Bash(php:*), Bash(go:*), Bash(cargo:*), Read, Glob
+allowed-tools: [Bash(git:*), Bash(npm:*), Bash(bun:*), Bash(bunx:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(mysql:*), Bash(python3:*), Bash(pip:*), Bash(composer:*), Bash(php:*), Bash(go:*), Bash(cargo:*), Read, Glob]
 ---
 
 # Update Project

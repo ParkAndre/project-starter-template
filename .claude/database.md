@@ -1,12 +1,12 @@
 # Database Guidelines
 
-> **Note:** These database guidelines apply regardless of your database system (PostgreSQL, MySQL, SQLite, MongoDB) or ORM/query builder (Prisma, TypeORM, Eloquent, SQLAlchemy, GORM, Diesel, etc.). Adapt the migration file formats and commands to your specific tooling.
+> **Note:** These guidelines apply regardless of your database system (PostgreSQL, MySQL, SQLite, MongoDB) or ORM/query builder. Adapt migration formats and commands to your specific tooling.
 
 ## Migration Files
 
-- ALWAYS create migration files for schema changes
-- NEVER modify database directly in production
-- Name migrations: `{number}_{description}_{issue-number}.sql` (e.g., `001_add_user_roles_73.sql` or `002_create_events_table_45.sql`)
+- Create migration files for all schema changes
+- Apply all database changes through migration files (not directly in production)
+- Name migrations: `{number}_{description}_{issue-number}.sql` (e.g., `001_add_user_roles_73.sql`)
 - Add indexes for frequently queried columns
 - Test migrations on copy of production data
 - Keep database queries optimized (avoid N+1 queries)
@@ -14,8 +14,8 @@
 
 ## Migration Best Practices
 
-- NEVER modify existing migrations (create new one instead)
-- ALWAYS backup database before running migrations in production
+- Keep existing migrations immutable — create new ones for changes
+- Backup database before running migrations in production
 - Use transactions for multi-step migrations
 - Make migrations reversible when possible (include DOWN/rollback logic)
 - Test both up AND down migrations
@@ -29,7 +29,7 @@ Each migration should have:
 2. **Down migration**: Rollback the change (if possible)
 3. **Comments**: Explain why change is needed
 
-**Example migration:**
+**Example migration (raw SQL):**
 ```sql
 -- Migration: 005_add_user_roles_73.sql
 -- Issue: #73
@@ -40,9 +40,11 @@ ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user';
 CREATE INDEX idx_users_role ON users(role);
 
 -- Down Migration
--- DROP INDEX idx_users_role;
--- ALTER TABLE users DROP COLUMN role;
+DROP INDEX idx_users_role;
+ALTER TABLE users DROP COLUMN role;
 ```
+
+If using an ORM/migration tool (Prisma, Drizzle, Eloquent, SQLAlchemy, GORM, etc.), follow that tool's migration format instead. The same principles apply: reversible, small, focused, and documented.
 
 ## Dangerous Operations
 
@@ -63,10 +65,10 @@ CREATE INDEX idx_users_role ON users(role);
 
 ## Query Optimization
 
-- ALWAYS use parameterized queries (prevent SQL injection)
-- Avoid SELECT * (specify needed columns)
+- Use parameterized queries exclusively (prevent SQL injection)
+- Specify needed columns instead of SELECT *
 - Use EXPLAIN to analyze query performance
-- Avoid N+1 queries (use JOINs or eager loading)
+- Use JOINs or eager loading to prevent N+1 queries
 - Use database query logging in development
 - Set up slow query logging in production
-- Use connection pooling (don't create new connection per query)
+- Use connection pooling (one pool per application, not per query)

@@ -51,7 +51,6 @@ CLAUDE.local.md.example            # Personal notes template (gitignored)
 ├── security.md                    # Security guidelines (OWASP-based)
 ├── testing.md                     # TDD workflow & test requirements
 ├── api-design.md                  # API & logging standards
-├── structure.md                   # Project structure conventions
 ├── database.md                    # Database & migration guidelines
 ├── standards.md                   # Code quality rules
 ├── issue-creation.md              # Issue writing guide
@@ -76,7 +75,7 @@ CLAUDE.local.md.example            # Personal notes template (gitignored)
 └── pre-commit.example             # Git pre-commit hook template (multi-stack)
 ```
 
-**Total: ~3,600 lines of guidelines and commands**
+**Total: ~2,300 lines of guidelines and commands**
 
 ---
 
@@ -106,13 +105,12 @@ When you start Claude Code in your project:
 ### Security (OWASP ASVS-based)
 - Input validation & injection prevention (SQL, XSS, Command, XXE)
 - Authentication & session management
-- HTTP security headers (with Apache/Nginx/Express examples)
+- HTTP security headers (CSP, HSTS, X-Frame-Options)
 - Rate limiting with specific limits
 
 ### Code Quality
 - Testing requirements (80% coverage, regression testing)
-- Project structure conventions (React/Node, Laravel, Django examples)
-- API design standards (RESTful, status codes, pagination)
+- API design standards (RESTful, OpenAPI, caching, idempotency)
 - Database migration procedures
 
 ---
@@ -127,7 +125,7 @@ All commands live in `.claude/commands/` and are loaded automatically by Claude 
 | `/commit [message]` | Smart git commit with conventional message |
 | `/merge [issue]` | Squash merge branch to main, close issue |
 | `/e2e [test]` | Run Playwright end-to-end tests |
-| `/research <topic>` | Web research using Playwright browser |
+| `/research <topic>` | Web research using Playwright browser (requires [Playwright MCP](https://github.com/anthropics/claude-code/blob/main/docs/mcp.md)) |
 | `/update-project` | Git pull, migrations, dependency updates |
 | `/review` | Thoughtful code review with parallel agents |
 | `/verify [mode]` | Pre-PR quality gate (lint, tests, build, secrets) |
@@ -237,12 +235,8 @@ After installing, customize these files for your project:
 
 ### CLAUDE.md (Required)
 
-- [ ] Update "Commands" section with your actual build/test/dev commands
-- [ ] Review File Placement table - match your project structure
+- [ ] Uncomment and customize the "Commands" section with your actual build/test/dev commands
 - [ ] Modify Critical Rules if you have project-specific requirements
-
-**Find and replace:**
-- `[YOUR_COMMANDS]` → Your actual commands
 
 ### .gitignore (Review)
 
@@ -253,9 +247,8 @@ After installing, customize these files for your project:
 ### .claude/*.md (Optional)
 
 - [ ] **security.md** - Add project-specific security requirements
-- [ ] **testing.md** - Replace `[YOUR_TEST_COMMAND]` with your actual commands
+- [ ] **testing.md** - Adjust coverage thresholds if needed
 - [ ] **api-design.md** - Adjust response format conventions
-- [ ] **structure.md** - Update examples to match your stack
 - [ ] **database.md** - Add ORM specifics (Prisma, Eloquent, etc.)
 - [ ] **standards.md** - Add team-specific code standards
 
@@ -291,7 +284,7 @@ Add to CLAUDE.md:
 
 ### How much context does this use?
 
-~3,600 lines total. Claude Code handles this well. If you notice slowness, remove unused `.claude/*.md` files.
+~2,300 lines total. Only ~450 lines are auto-loaded each session; the rest are reference files loaded on demand.
 
 ### Can I use this with other AI coding tools?
 

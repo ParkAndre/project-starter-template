@@ -1,3 +1,9 @@
+---
+description: Pre-PR quality gate with PASS/FAIL status
+argument-hint: [quick | full]
+allowed-tools: [Bash(git:*), Bash(npm:*), Bash(npx:*), Bash(yarn:*), Bash(pnpm:*), Bash(bun:*), Bash(bunx:*), Bash(composer:*), Bash(python3:*), Bash(pytest:*), Bash(go:*), Bash(cargo:*), Bash(make:*), Read, Glob, Grep]
+---
+
 # Verify
 
 Pre-PR quality gate. Run all project checks and report PASS/FAIL status.

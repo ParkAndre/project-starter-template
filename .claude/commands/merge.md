@@ -42,27 +42,30 @@ BRANCH=$(git branch --show-current)
 # 2. Fetch latest main
 git fetch origin main
 
-# 3. Checkout main
+# 3. Rebase on latest main (resolve conflicts before merging)
+git rebase origin/main
+
+# 4. Checkout main
 git checkout main
 
-# 4. Pull latest
+# 5. Pull latest
 git pull origin main
 
-# 5. Squash merge
+# 6. Squash merge
 git merge --squash $BRANCH
 
-# 6. Commit with proper message
+# 7. Commit with proper message
 git commit -m "Type: Description
 
 Closes #XX"
 
-# 7. Push to remote
+# 8. Push to remote
 git push origin main
 
-# 8. Delete feature branch (local)
+# 9. Delete feature branch (local)
 git branch -d $BRANCH
 
-# 9. Delete feature branch (remote, optional)
+# 10. Delete feature branch (remote)
 git push origin --delete $BRANCH
 ```
 

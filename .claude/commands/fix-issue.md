@@ -47,10 +47,12 @@ End-to-end issue implementation following project workflow. Takes a GitHub issue
    - Show summary of changes (files modified, tests added)
    - Ask: "Is there anything else to change, or should I squash merge to main and close issue #XX?"
    - If complete:
+     - Rebase on latest main: `git fetch origin main && git rebase origin/main`
      - `git checkout main && git merge --squash <branch>`
      - Commit with: `<issue title>\nCloses #XX`
      - NEVER include "Co-Authored-By: Claude" in commit message
      - `git push origin main`
+     - Delete feature branch: `git branch -d <branch> && git push origin --delete <branch>`
      - Verify issue is closed: `gh issue view <number>`
 
 ## Rules
