@@ -210,3 +210,14 @@ Return `429 Too Many Requests` with `Retry-After` header.
 - Keep `.env.example` updated (placeholder values only), validate required env vars at startup
 - Use separate credentials per environment
 - Run dependency audits regularly (`npm audit`, `composer audit`, `pip-audit`)
+
+---
+
+## Related Skills
+
+- **`/security-scan [mode]`** — diff-only security review with data flow tracing, confidence ≥8/10, exploit scenarios, hard exclusions list, risk auto-elevation when diff touches auth/crypto/validation
+- **`/commit`** — secrets scan on every commit (private keys, AKIA, sk_*, ghp_, xox*, generic password/token patterns) before staging
+- **`/verify [mode]`** — pre-PR gate includes always-on safety scans (secrets + AI-attribution + debug-code) regardless of mode
+- **`/review`** — code review's Security agent (one of 6 parallel specialists) catches violations of patterns in this document
+
+This document is the standards reference; skills above identify violations of these rules.

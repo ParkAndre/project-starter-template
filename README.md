@@ -1,347 +1,286 @@
-# Project Starter Template
+# Claude Config — Project Starter Template
 
-Technology-agnostic project guidelines with Claude Code configuration. Provides security best practices, testing requirements, and Git workflow for any tech stack.
+Technology-agnostic Claude Code configuration: security, testing, Git workflow, and custom skills/commands that work in any project.
+
+**Source of truth** for portable AI development tools — install locally for personal use, fork for your team, adapt for other AI tools (Cursor, GitHub Copilot, Aider — see Roadmap).
 
 ---
 
 ## Quick Start
 
-### Install in New Project
+### Install in a new project
 
 ```bash
 mkdir my-project && cd my-project
-
-# Install template
 curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
-
-# Initialize git
-git init
-git add .
-git commit -m "Initial commit with project starter template"
+git init && git add . && git commit -m "Initial commit"
 ```
 
-### Add to Existing Project
+### Add to an existing project
 
 ```bash
 cd existing-project
-
-# Install template
 curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
-
-# Commit
-git add CLAUDE.md .claude/ .husky/ .gitignore
-git commit -m "Add project starter template and guidelines"
+git add CLAUDE.md .claude/ .gitignore && git commit -m "Add starter template"
 ```
 
-### Verify It Works
+### Verify
 
-Ask Claude Code: "What are our commit message conventions?"
-
-If Claude answers correctly with the TWO workflow explanation, it's working.
+Ask Claude Code: *"What are our commit conventions?"* — it should explain the TWO-workflow rule (simple messages on feature branches, full `feat:`/`fix:` format for squash merges).
 
 ---
 
-## What's Included
+## Architecture
+
+This template uses the **Skills** format (`SKILL.md`) for all AI-driven workflows:
+
+| Format | Location | Status | Use case |
+|---|---|---|---|
+| **Skills** (`SKILL.md`) | `.claude/skills/<name>/SKILL.md` | Current standard | Rich frontmatter, progressive disclosure (`references/*.md`), per-skill directory |
+| **Commands** (`*.md`) | `.claude/commands/<name>.md` | Deprecated | Single file, simpler frontmatter — all 14 commands now migrated to skills |
+
+**Migration complete.** All 14 legacy commands have been rewritten as skills. See `SKILL-UPGRADE-GUIDE.md` for the migration methodology used.
+
+---
+
+## Current Skills (14/14 — migration complete ✓)
+
+| Skill | Location | What it does |
+|---|---|---|
+| `/analyze <target>` | `.claude/skills/analyze/SKILL.md` | Read-only deep analysis and problem diagnosis. 5 modes (Quick/Standard/Deep/Diagnostic/Comparison), structured findings with confidence levels, mermaid diagrams, hypothesis testing with 3-failure stop rule. Identifies causes; does not propose code changes |
+| `/catchup [branch]` | `.claude/skills/catchup/SKILL.md` | Read-only branch context summary. Shows branch, issue, recent commits, changed files, AC progress, uncommitted + stashed changes, last-commit age, suggested next steps. Reads handoff files from `/fix-issue` |
+| `/commit` | `.claude/skills/commit/SKILL.md` | Evidence-driven git commit. Intent alignment (message matches diff hunks), secrets scan, AI-attribution sweep, branch-context format (simple vs squash-merge), preview before commit |
+| `/e2e [args]` | `.claude/skills/e2e/SKILL.md` | Run Playwright end-to-end tests. Auto-detect package manager + Playwright install + browser availability + webServer config. Three modes (all/file/grep). Structured failure report with Error → Cause → Fix table. Playwright-only (Cypress/Selenium → migration suggest) |
+| `/fix-issue <n>` | `.claude/skills/fix-issue/SKILL.md` | End-to-end issue implementation. Triage gate, sub-agent codebase exploration, TDD with RED-gate verification, status discipline (DONE/CONCERNS/CONTEXT/BLOCKED), local squash-merge completion (this project does NOT use GitHub PRs) |
+| `/merge [issue]` | `.claude/skills/merge/SKILL.md` | Squash merge feature branch to base + close issue. Pre-merge gates (tests + lint + secrets + AI-attribution), rebase with interactive conflict prompt, re-run tests after rebase, FULL commit format, branch cleanup, verify issue closed |
+| `/refactor [path] [apply]` | `.claude/skills/refactor/SKILL.md` | Safe dead-code removal. Per-pattern codes (DEAD-1..7), confidence levels (90+/80-89/<80), commit-before-refactor gate, oscillation guard, preview-first by default |
+| `/research <query>` | `.claude/skills/research/SKILL.md` | Web research with cost-graded tool ladder (WebSearch → WebFetch → Playwright MCP). Reconnaissance-then-action, structured sources table, hallucination guard ("retract claims you can't quote"), depth modes (--quick 3 / --deep 10+). Captcha + session reuse |
+| `/review` | `.claude/skills/review/SKILL.md` | Code review with 6 parallel specialist agents (correctness+domain, security, reliability, performance, maintainability, test quality). Mitigation discipline, intent alignment, post-fix self-review |
+| `/security-scan [mode]` | `.claude/skills/security-scan/SKILL.md` | Diff-only security review with data flow tracing. Confidence ≥8/10, concrete exploit scenarios, hard exclusions list, rationalizations-to-reject table, risk auto-elevation when diff touches auth/crypto/validation |
+| `/tdd <AC>` | `.claude/skills/tdd/SKILL.md` | Standalone TDD loop with Iron Law enforcement ("NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST"). RED → Verify RED (runtime vs compile-time) → GREEN (minimal) → optional REFACTOR. Rationalizations-to-reject table, When Stuck decision table |
+| `/update-project [--skip-migrate] [--skip-deps]` | `.claude/skills/update-project/SKILL.md` | Sync project with remote. Stash WIP with preview, fetch + rebase pull (interactive conflict prompt), run migrations (Prisma/Drizzle/Django/Laravel/Rails), install dependencies (multi-stack auto-detected), pop stash, structured summary |
+| `/update-readme [file]` | `.claude/skills/update-readme/SKILL.md` | Validate README against project reality and fix drift. Source-of-truth scan (package.json scripts, file tree, env vars), DRIFT/MISSING/STALE/OK/UNKNOWN classification, diff-style proposal, surgical Edit (preserves voice + custom sections like Personal Notes + badges) |
+| `/verify [mode]` | `.claude/skills/verify/SKILL.md` | Pre-merge quality gate. Multi-stack detection, severity ladder (CRITICAL/MAJOR/MINOR/INFO), always-on safety gates (secrets + AI-attribution + debug-code). Three modes: quick (lint+tests), full (+typecheck+build), strict (+commented-code+coverage) |
+
+---
+
+## Imported Guidelines (auto-loaded by Claude Code)
+
+Imported via `@.claude/*.md` in `CLAUDE.md` — load automatically each session:
+
+| File | Purpose |
+|---|---|
+| `.claude/security.md` | OWASP ASVS 5.0-based security rules |
+| `.claude/testing.md` | TDD workflow, coverage thresholds, edge cases |
+| `.claude/standards.md` | Code quality, accessibility, logging |
+
+**Reference files** (on-demand, not auto-imported — read when relevant):
+- `.claude/api-design.md` — REST/API conventions
+- `.claude/database.md` — Migration and ORM guidance
+- `.claude/issue-creation.md` — Bilingual issue draft workflow
+
+---
+
+## File Structure
 
 ```
-CLAUDE.md                          # Main config
-CLAUDE.local.md.example            # Personal notes template (gitignored)
-.gitignore                         # Comprehensive starter template
-.claude/
-├── security.md                    # Security guidelines (OWASP-based)
-├── testing.md                     # TDD workflow & test requirements
-├── api-design.md                  # API & logging standards
-├── database.md                    # Database & migration guidelines
-├── standards.md                   # Code quality rules
-├── issue-creation.md              # Issue writing guide
-├── settings.json.example          # Hooks configuration template (generic)
-├── settings-hooks-examples.md     # Per-stack hook & permission examples
-└── commands/
-    ├── review.md                  # /review - thoughtful code review
-    ├── verify.md                  # /verify - pre-PR quality gate
-    ├── security-scan.md           # /security-scan - security analysis
-    ├── tdd.md                     # /tdd - guided TDD workflow
-    ├── fix-issue.md               # /fix-issue - issue to merge workflow
-    ├── refactor.md                # /refactor - safe dead code removal
-    ├── catchup.md                 # /catchup - branch context summary
-    ├── analyze.md                 # /analyze - code and system analysis
-    ├── research.md                # /research - web research with Playwright
-    ├── update-project.md          # /update-project - git pull, migrations, deps
-    ├── commit.md                  # /commit - smart git commit
-    ├── merge.md                   # /merge - squash merge to main
-    ├── e2e.md                     # /e2e - run Playwright tests
-    └── update-readme.md           # /update-readme - validate & update README
-.husky/
-└── pre-commit.example             # Git pre-commit hook template (multi-stack)
+claude-config/
+├── CLAUDE.md                                  # Main config (auto-loaded)
+├── CLAUDE.local.md.example                    # Personal notes template (gitignored)
+├── README.md                                  # This file
+├── KOKKUVÕTE.md                               # Estonian methodology + sources
+├── SKILL-UPGRADE-GUIDE.md                     # Skill migration methodology (Estonian)
+├── install.sh                                 # Bootstrap script
+├── .gitignore                                 # Generic starter
+└── .claude/
+    ├── security.md                            # @import (auto-loaded)
+    ├── testing.md                             # @import (auto-loaded)
+    ├── standards.md                           # @import (auto-loaded)
+    ├── api-design.md                          # On-demand reference
+    ├── database.md                            # On-demand reference
+    ├── issue-creation.md                      # On-demand reference
+    ├── settings.json.example                  # Hooks template
+    ├── settings-hooks-examples.md             # Per-stack hook examples
+    └── skills/                                # All 14 skills (SKILL.md format)
+        ├── analyze/SKILL.md
+        ├── catchup/SKILL.md
+        ├── commit/SKILL.md
+        ├── e2e/SKILL.md
+        ├── fix-issue/SKILL.md
+        ├── merge/SKILL.md
+        ├── refactor/SKILL.md
+        ├── research/SKILL.md
+        ├── review/SKILL.md
+        ├── security-scan/SKILL.md
+        ├── tdd/SKILL.md
+        ├── update-project/SKILL.md
+        ├── update-readme/SKILL.md
+        └── verify/SKILL.md
 ```
-
-**Total: ~2,300 lines of guidelines and commands**
 
 ---
 
 ## How It Works
 
-**CLAUDE.md is automatically loaded by Claude Code on every conversation.**
+`CLAUDE.md` loads automatically in every Claude Code conversation in this project. It imports `.claude/security.md`, `.claude/testing.md`, `.claude/standards.md` via `@`-syntax.
 
-When you start Claude Code in your project:
-1. Claude finds `CLAUDE.md` in project root
-2. Imports files via `@.claude/*.md` syntax
-3. Follows these guidelines automatically
+Skills in `.claude/skills/<name>/SKILL.md` are discovered automatically and invocable via `/<name>`. Their `disable-model-invocation: true` frontmatter prevents Claude from auto-triggering them — manual invocation only.
 
-**You never need to:**
-- Paste guidelines into chat
-- Remind Claude about rules
-- Reference files manually
+Commands in `.claude/commands/` are also discoverable but use the older single-file format.
+
+**You never need to** paste guidelines into chat or remind Claude of rules.
 
 ---
 
-## Features
+## Creating New Skills
 
-### Git Workflow
-- GitHub issue-driven development
-- Feature branch workflow with squash merging
-- Commit message conventions (TWO workflows: branch vs main)
-
-### Security (OWASP ASVS-based)
-- Input validation & injection prevention (SQL, XSS, Command, XXE)
-- Authentication & session management
-- HTTP security headers (CSP, HSTS, X-Frame-Options)
-- Rate limiting with specific limits
-
-### Code Quality
-- Testing requirements (80% coverage, regression testing)
-- API design standards (RESTful, OpenAPI, caching, idempotency)
-- Database migration procedures
-
----
-
-## Custom Commands (Slash Commands)
-
-All commands live in `.claude/commands/` and are loaded automatically by Claude Code.
-
-| Command | Description |
-|---------|-------------|
-| `/analyze <target>` | Deep analysis of code, components, or problems |
-| `/commit [message]` | Smart git commit with conventional message |
-| `/merge [issue]` | Squash merge branch to main, close issue |
-| `/e2e [test]` | Run Playwright end-to-end tests |
-| `/research <topic>` | Web research using Playwright browser (requires [Playwright MCP](https://github.com/anthropics/claude-code/blob/main/docs/mcp.md)) |
-| `/update-project` | Git pull, migrations, dependency updates |
-| `/review` | Thoughtful code review with parallel agents |
-| `/verify [mode]` | Pre-PR quality gate (lint, tests, build, secrets) |
-| `/security-scan` | Security analysis of changed code (data flow tracing) |
-| `/tdd <issue>` | Guided TDD with RED-GREEN-REFACTOR enforcement |
-| `/fix-issue <number>` | End-to-end issue implementation workflow |
-| `/refactor [path]` | Safe, incremental dead code removal |
-| `/catchup` | Branch context summary (read-only) |
-| `/update-readme` | Validate README against actual project state and fix drift |
-
-### Creating Custom Commands
-
-Command files use YAML frontmatter + Markdown:
+A skill is a directory with one `SKILL.md` file:
 
 ```markdown
 ---
-description: Short description shown in /help
-argument-hint: <optional arguments>
-allowed-tools: [Tool1, Tool2, Bash(git:*)]
+name: my-skill
+description: Short description. Use when user says X, Y, or Z.
+disable-model-invocation: true
+allowed-tools: Bash(git:*) Read Glob Grep
 ---
 
-# Command Title
+# My Skill
 
-Instructions for Claude to follow when this command is invoked.
+## Persona
+[1 paragraph defining the agent's role and disposition]
 
-$ARGUMENTS will be replaced with user input after the command.
+## Standard
+[5-8 rules the skill enforces]
+
+## Process
+[Numbered steps, imperative voice]
+
+## Rules
+[NEVER / ALWAYS statements]
 ```
 
-#### Frontmatter Options
+**Frontmatter notes:**
+- `disable-model-invocation: true` — manual `/my-skill` only (recommended for side-effect-heavy skills like commits, merges)
+- `disable-model-invocation: false` — Claude can auto-invoke based on `description` (use for utility / read-only skills)
+- `allowed-tools` is a **space-separated string** (not array): `Bash(git:*) Bash(npm:*) Read Glob`
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `description` | Yes | Shown in help and autocomplete |
-| `argument-hint` | No | Placeholder text for arguments |
-| `allowed-tools` | No | Tools the command can use (security) |
-| `name` | No | Override command name (default: filename) |
+**Anthropic recommends keeping SKILL.md under 500 lines** (ideally 200-300). For longer content, split into `references/<topic>.md` files in the same directory and reference from SKILL.md.
 
-#### Tool Patterns
-
-```yaml
-# Specific tools
-allowed-tools: [Read, Write, Glob]
-
-# Bash with command patterns
-allowed-tools: [Bash(git:*), Bash(npm:*)]
-
-# MCP tools
-allowed-tools: [mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot]
-```
+See existing skills (`commit`, `fix-issue`, `refactor`, `review`) as concrete examples.
 
 ---
 
-## Automation (Hooks & Pre-commit)
+## Roadmap
 
-### Claude Code Hooks
+### Skill migration ✓ complete
 
-Hooks run automatically during Claude's operations:
+All 14 commands have been rewritten as skills (analyze, catchup, commit, e2e, fix-issue, merge, refactor, research, review, security-scan, tdd, update-project, update-readme, verify).
 
-```bash
-# Copy template and customize for your stack
-cp .claude/settings.json.example .claude/settings.json
-```
+Methodology: `SKILL-UPGRADE-GUIDE.md` — research best practices → plan → write → verify → delete legacy. Each skill has its own `SKILL.md` with frontmatter (name, description, `disable-model-invocation`, tight `allowed-tools`) and an imperative body.
 
-See `.claude/settings-hooks-examples.md` for per-stack examples:
-- **Node.js/TS**: Prettier auto-format, auto-test
-- **Python**: Ruff format/lint, pytest auto-test
-- **PHP**: PHP CS Fixer, PHPUnit auto-test
-- **Go**: gofmt, auto-test
-- **Rust**: rustfmt
+### Multi-AI portability (planned)
 
-The base template includes:
-- Block writes to sensitive files (`.env`, `.pem`, `.key`)
+Skills are written with portable body content (e.g. "ask user to confirm" instead of "use AskUserQuestion tool", "shell command" instead of "Bash tool"). Future installer scripts will generate adapters:
 
-### Git Pre-commit Hook
+| Tool | Target | Status |
+|---|---|---|
+| **Claude Code** (global) | `~/.claude/skills/<name>/SKILL.md` | Manual `cp -r` today; scripted later |
+| **Cursor** | `<project>/.cursor/rules/<name>.mdc` | Transform: strip Claude frontmatter, add Cursor frontmatter |
+| **GitHub Copilot** | `<project>/.github/copilot-instructions.md` | Concatenate skill bodies |
+| **Aider** | `<project>/.aider.conf.yml` `system_prompts` | Extract body, inline |
+| **ChatGPT Custom GPTs** | `instructions` field | Manual paste |
 
-Tests run automatically before every commit:
+Until adapters ship, copy a skill's body (everything below frontmatter) and paste into your other tool's instruction field.
 
-```bash
-# Copy and enable
-cp .husky/pre-commit.example .husky/pre-commit
-chmod +x .husky/pre-commit
+### Other planned items
 
-# Then uncomment your stack's section in .husky/pre-commit
-```
-
-For Node.js projects using Husky:
-```bash
-npm install -D husky && npx husky init
-# or: bun add -d husky && bunx husky init
-```
-
-### Personal Notes (CLAUDE.local.md)
-
-For personal preferences not committed to git:
-
-```bash
-cp CLAUDE.local.md.example CLAUDE.local.md
-```
-
-This file is gitignored - use for local environment notes, current focus, debugging.
+- `references/<topic>.md` progressive disclosure for skills that exceed 300 lines
+- Hook-level enforcement (e.g. PreToolUse hook blocking commits containing `BEGIN PRIVATE KEY`)
+- Optional `/simplify` skill for NAMING/SIMPLIFY/MODERN refactors (sibling to dead-code `/refactor`)
 
 ---
 
-## Customization Checklist
+## Customization
 
-After installing, customize these files for your project:
+After installing into your project, customize these:
 
-### CLAUDE.md (Required)
+### `CLAUDE.md` (required)
+- Fill in your build/test/dev commands under "Commands"
+- Add team-specific Critical Rules
 
-- [ ] Uncomment and customize the "Commands" section with your actual build/test/dev commands
-- [ ] Modify Critical Rules if you have project-specific requirements
+### `.gitignore` (recommended)
+- Remove rules not applicable to your stack
+- Add project-specific patterns
 
-### .gitignore (Review)
+### `.claude/*.md` (optional)
+- `security.md` — add project-specific security requirements
+- `testing.md` — adjust coverage thresholds
+- Delete files you don't need (`database.md` for static sites, etc.)
 
-- [ ] Review included ignores - remove what's not applicable
-- [ ] Add project-specific patterns (e.g., `/uploads/`, `/storage/`)
-- [ ] Decide on lock files (see Optional section in file)
-
-### .claude/*.md (Optional)
-
-- [ ] **security.md** - Add project-specific security requirements
-- [ ] **testing.md** - Adjust coverage thresholds if needed
-- [ ] **api-design.md** - Adjust response format conventions
-- [ ] **database.md** - Add ORM specifics (Prisma, Eloquent, etc.)
-- [ ] **standards.md** - Add team-specific code standards
-
-### Remove Unused Guidelines
-
-If not using a database:
-```markdown
-# In CLAUDE.md, remove this line:
-@.claude/database.md
-```
-Then delete `.claude/database.md`.
-
-### Add Team-Specific Rules
-
-Add to CLAUDE.md:
-```markdown
-## Team Conventions
-
-- Use Prettier with 2-space indentation
-- Prefix private methods with underscore
-```
+### `.claude/skills/` (optional)
+- Edit existing skills to fit your project's tools
+- Add new skills following the format above
 
 ---
 
 ## FAQ
 
-### Why separate files instead of one big CLAUDE.md?
+### Why split into skills + imported guidelines?
 
-**Modularity.** You can:
-- Remove guidelines you don't need (e.g., database.md for static sites)
-- Update security guidelines without touching workflow rules
-- Keep CLAUDE.md focused on project-specific config
+**Different things, different formats.** Skills are invocable workflows (`/commit`, `/review`). Guidelines (`security.md`, `testing.md`) are continuously-applied rules. Skills load on invocation; guidelines load on every session.
 
-### How much context does this use?
+### How much context does this use per session?
 
-~2,300 lines total. Only ~450 lines are auto-loaded each session; the rest are reference files loaded on demand.
+Auto-loaded content (`CLAUDE.md` + 3 imported guidelines) is ~450 lines. Skills load only when invoked. Reference files (`api-design.md`, etc.) load on demand.
 
-### Can I use this with other AI coding tools?
+### Can I use this with other AI tools (Cursor, Copilot, Aider)?
 
-The guidelines are written for Claude Code's `@import` syntax. Other tools may need the content pasted directly or adapted to their format.
+See Roadmap above. **Today:** copy a skill's body (everything below frontmatter) and paste into your other tool's instruction field. **Future:** installer scripts will automate this per tool.
 
-### Why no TypeScript/React/Laravel-specific rules?
+### Why `skills/` and not `commands/`?
 
-**Technology-agnostic by design.** The principles (security, testing, structure) apply to any stack. Stack-specific examples are included where helpful.
+`skills/` is the current Claude Code standard (directory per skill, richer frontmatter — `disable-model-invocation`, `allowed-tools`, `version` — progressive disclosure via `references/*.md`). `commands/` was the older single-file format; this template's 14 commands have all been migrated to `skills/`. The `commands/` directory has been removed entirely — if you need to use the older format in your own project, simply create `.claude/commands/` manually.
 
 ### How do I update when the template improves?
 
 ```bash
-# Backup your customizations
 cp CLAUDE.md CLAUDE.md.backup
 cp -r .claude .claude.backup
-
-# Reinstall
 curl -fsSL https://raw.githubusercontent.com/ParkAndre/project-starter-template/main/install.sh | bash
-
-# Merge back your Commands section and any custom rules
+# Merge your Commands section and any custom rules back from backups
 ```
 
----
+### Why is `KOKKUVÕTE.md` in Estonian?
 
-## Troubleshooting
+It documents the design rationale, sources, and trade-offs behind every decision in this template, in the author's first language. Practical "how to use" content lives in this README (English). Use `KOKKUVÕTE.md` if you want the *why* behind specific choices.
 
-### Claude isn't following a guideline
+### Why is `SKILL-UPGRADE-GUIDE.md` in Estonian?
 
-1. Make the rule more specific (add examples)
-2. Use stronger language (ALWAYS/NEVER)
-3. Move it to "Critical Rules Summary" section in CLAUDE.md
+Same reason — it's a working methodology document for the migration effort. The principles (research → plan → write → verify) are universal; the prose is Estonian.
 
-### Claude doesn't know about CLAUDE.md
+### Claude isn't following a rule
 
-- Ensure CLAUDE.md is in project root (not a subdirectory)
-- File must be named exactly `CLAUDE.md` (case-sensitive)
-- You must be in the project directory when starting Claude Code
+1. Make the rule more specific (add a concrete example)
+2. Use stronger language (`ALWAYS` / `NEVER`)
+3. Move it to "Critical Rules" in `CLAUDE.md`
 
 ### Changes not taking effect
 
-- Press `#` in Claude Code to reload CLAUDE.md
-- Changes apply automatically in new conversations
-- For imported files, Claude Code re-reads on each conversation
-
-### Too slow / too much context
-
-- Remove unused `.claude/*.md` files
-- Simplify rules that are obvious (Claude already knows basic security)
-- Keep custom additions concise
+- Press `#` in Claude Code to reload `CLAUDE.md`
+- New conversations apply changes automatically
+- For imported `@.claude/*.md` files: Claude re-reads on each new conversation
 
 ---
 
 ## Links
 
-- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Skills documentation](https://code.claude.com/docs/en/skills)
+- [Claude sub-agents documentation](https://code.claude.com/docs/en/sub-agents)
 - [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
+- [SKILL-UPGRADE-GUIDE.md](./SKILL-UPGRADE-GUIDE.md) — migration methodology (Estonian)
+- [KOKKUVÕTE.md](./KOKKUVÕTE.md) — full design rationale + sources (Estonian)
 
 ---
 
-Free to use in all projects. No attribution needed.
+Free to use in any project. No attribution needed.

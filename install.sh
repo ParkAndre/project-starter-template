@@ -23,7 +23,20 @@ echo -e "${BLUE}======================================${NC}\n"
 # Create directories
 echo -e "${YELLOW}Creating directories...${NC}"
 mkdir -p .claude
-mkdir -p .claude/commands
+mkdir -p .claude/skills/analyze
+mkdir -p .claude/skills/catchup
+mkdir -p .claude/skills/commit
+mkdir -p .claude/skills/e2e
+mkdir -p .claude/skills/fix-issue
+mkdir -p .claude/skills/merge
+mkdir -p .claude/skills/refactor
+mkdir -p .claude/skills/research
+mkdir -p .claude/skills/review
+mkdir -p .claude/skills/security-scan
+mkdir -p .claude/skills/tdd
+mkdir -p .claude/skills/update-project
+mkdir -p .claude/skills/update-readme
+mkdir -p .claude/skills/verify
 mkdir -p .husky
 
 # Download files
@@ -41,20 +54,23 @@ files=(
     ".claude/issue-creation.md"
     ".claude/settings.json.example"
     ".claude/settings-hooks-examples.md"
-    ".claude/commands/review.md"
-    ".claude/commands/verify.md"
-    ".claude/commands/security-scan.md"
-    ".claude/commands/tdd.md"
-    ".claude/commands/fix-issue.md"
-    ".claude/commands/refactor.md"
-    ".claude/commands/catchup.md"
-    ".claude/commands/analyze.md"
-    ".claude/commands/research.md"
-    ".claude/commands/update-project.md"
-    ".claude/commands/commit.md"
-    ".claude/commands/merge.md"
-    ".claude/commands/e2e.md"
-    ".claude/commands/update-readme.md"
+
+    # New SKILL.md format (preferred)
+    ".claude/skills/analyze/SKILL.md"
+    ".claude/skills/catchup/SKILL.md"
+    ".claude/skills/commit/SKILL.md"
+    ".claude/skills/e2e/SKILL.md"
+    ".claude/skills/fix-issue/SKILL.md"
+    ".claude/skills/merge/SKILL.md"
+    ".claude/skills/refactor/SKILL.md"
+    ".claude/skills/research/SKILL.md"
+    ".claude/skills/review/SKILL.md"
+    ".claude/skills/security-scan/SKILL.md"
+    ".claude/skills/tdd/SKILL.md"
+    ".claude/skills/update-project/SKILL.md"
+    ".claude/skills/update-readme/SKILL.md"
+    ".claude/skills/verify/SKILL.md"
+
     ".husky/pre-commit.example"
 )
 

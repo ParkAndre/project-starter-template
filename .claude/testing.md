@@ -114,3 +114,14 @@ Coverage is not a goal in itself — 60% with real tests beats 100% with fake te
 - Fix the root cause, re-run and verify
 - If existing tests fail after your changes: fix the regression before merging
 - Maintain test integrity — do not delete or weaken tests to force green status
+
+---
+
+## Related Skills
+
+- **`/tdd <AC>`** — runtime TDD loop (RED → Verify RED → GREEN → REFACTOR), enforces Iron Law ("NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST")
+- **`/fix-issue <n>`** — end-to-end issue implementation with TDD per AC, status discipline, squash-merge or draft-PR
+- **`/verify [mode]`** — pre-PR quality gate: tests + lint + typecheck + build + safety scans
+- **`/e2e [args]`** — run Playwright end-to-end tests with failure debugging table
+
+This document is the standards reference; skills above are the runtime implementations.

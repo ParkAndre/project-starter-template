@@ -2,6 +2,8 @@
 
 Guide for writing well-structured GitHub issues that follow project conventions.
 
+**Note:** The `/fix-issue` skill applies this guide automatically when creating new issues (Estonian draft → user approves → translate to English → `gh issue create`). For end-to-end workflow (issue → branch → TDD → merge), use `/fix-issue` instead of manual `gh issue create`. This document is the reference both for the skill and for manual issue authoring.
+
 ---
 
 ## Core Principles
