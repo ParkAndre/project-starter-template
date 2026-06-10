@@ -47,6 +47,7 @@ files=(
     ".claude/skills/research/SKILL.md"
     ".claude/skills/review/SKILL.md"
     ".claude/skills/security-scan/SKILL.md"
+    ".claude/skills/simplify/SKILL.md"
     ".claude/skills/tdd/SKILL.md"
     ".claude/skills/update-project/SKILL.md"
     ".claude/skills/update-readme/SKILL.md"

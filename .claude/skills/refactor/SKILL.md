@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Safe, incremental dead code removal with per-pattern codes, confidence levels, commit-before-refactor gate, behavior preservation, and oscillation guard. Default preview-first; use "apply" arg to execute. Use when user says "refactor", "clean up dead code", or invokes "/refactor".
+description: Safe, incremental dead code removal with per-pattern codes, confidence levels, commit-before-refactor gate, behavior preservation, and oscillation guard. Dead code ONLY — for quality cleanups (reuse, naming, idioms) use /simplify. Default preview-first; use "apply" arg to execute. Use when user says "refactor", "clean up dead code", or invokes "/refactor".
 disable-model-invocation: true
 allowed-tools: Bash(git:*) Bash(npm:*) Bash(bun:*) Bash(pnpm:*) Bash(yarn:*) Bash(composer:*) Bash(pytest:*) Bash(python3:*) Bash(go:*) Bash(cargo:*) Bash(make:*) Bash(test:*) Bash(grep:*) Bash(ls:*) Read Edit Glob Grep
 ---
@@ -143,14 +143,7 @@ Invoke `ExitPlanMode`. Wait for user approval.
 
 ### 8. Execute removals (after approval)
 
-Detect test runner once:
-- `package.json` scripts.test → `npm test` / `bun test` / `pnpm test` / `yarn test` (use detected package manager)
-- `pytest.ini`, `pyproject.toml`, or `setup.cfg` → `pytest`
-- `phpunit.xml` → `vendor/bin/phpunit`
-- `go.mod` → `go test ./...`
-- `Cargo.toml` → `cargo test`
-- `Makefile` with `test` target → `make test`
-- None → note "no test runner detected; will skip post-removal test runs (HIGHER RISK)" and ask user to confirm continuing
+Detect test runner once via the table in `.claude/scan-patterns.md`. None detected → note "no test runner detected; will skip post-removal test runs (HIGHER RISK)" and ask user to confirm continuing.
 
 **For SAFE items (single bulk approval already given):**
 

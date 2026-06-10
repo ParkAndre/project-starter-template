@@ -1,6 +1,6 @@
 ---
 name: review
-description: Thoughtful code review with parallel specialist agents — broad coverage across 6 dimensions (correctness, security, reliability, performance, maintainability, tests). For deep data-flow security analysis with exploit scenarios use /security-scan instead. Use when user says "review", "check my code", or similar.
+description: Thoughtful code review with parallel specialist agents — broad coverage across 6 dimensions (correctness, security, reliability, performance, maintainability, tests). Finds PROBLEMS — for deep data-flow security analysis use /security-scan; for applying quality cleanups (reuse, naming, idioms) use /simplify. Use when user says "review", "check my code", or similar.
 disable-model-invocation: true
 allowed-tools: Bash(git:*) Bash(gh:*) Bash(test:*) Read Glob Grep Agent
 ---

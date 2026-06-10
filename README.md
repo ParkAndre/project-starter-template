@@ -43,7 +43,7 @@ This template uses the **Skills** format (`SKILL.md`) for all AI-driven workflow
 
 ---
 
-## Current Skills (14/14 — migration complete ✓)
+## Current Skills (15)
 
 | Skill | Location | What it does |
 |---|---|---|
@@ -57,6 +57,7 @@ This template uses the **Skills** format (`SKILL.md`) for all AI-driven workflow
 | `/research <query>` | `.claude/skills/research/SKILL.md` | Web research with cost-graded tool ladder (WebSearch → WebFetch → Playwright MCP). Reconnaissance-then-action, structured sources table, hallucination guard ("retract claims you can't quote"), depth modes (--quick 3 / --deep 10+). Captcha + session reuse |
 | `/review` | `.claude/skills/review/SKILL.md` | Code review with 6 parallel specialist agents (correctness+domain, security, reliability, performance, maintainability, test quality). Mitigation discipline, intent alignment, post-fix self-review |
 | `/security-scan [mode]` | `.claude/skills/security-scan/SKILL.md` | Diff-only security review with data flow tracing. Confidence ≥8/10, concrete exploit scenarios, hard exclusions list, rationalizations-to-reject table, risk auto-elevation when diff touches auth/crypto/validation |
+| `/simplify [path] [apply]` | `.claude/skills/simplify/SKILL.md` | Code quality cleanup on the current diff: reuse existing helpers, remove over-abstraction (YAGNI), fix misleading names, modernize idioms, hoist simple inefficiencies. Per-pattern codes (REUSE/ABSTRACT/NAME/IDIOM/EFF) with confidence tiers, same safety harness as `/refactor` (test after each change, revert on failure, oscillation guard). Quality only — not bug hunting, not dead code |
 | `/tdd <AC>` | `.claude/skills/tdd/SKILL.md` | Standalone TDD loop with Iron Law enforcement ("NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST"). RED → Verify RED (runtime vs compile-time) → GREEN (minimal) → optional REFACTOR. Rationalizations-to-reject table, When Stuck decision table |
 | `/update-project [--skip-migrate] [--skip-deps]` | `.claude/skills/update-project/SKILL.md` | Sync project with remote. Stash WIP with preview, fetch + rebase pull (interactive conflict prompt), run migrations (Prisma/Drizzle/Django/Laravel/Rails), install dependencies (multi-stack auto-detected), pop stash, structured summary |
 | `/update-readme [file]` | `.claude/skills/update-readme/SKILL.md` | Validate README against project reality and fix drift. Source-of-truth scan (package.json scripts, file tree, env vars), DRIFT/MISSING/STALE/OK/UNKNOWN classification, diff-style proposal, surgical Edit (preserves voice + custom sections like Personal Notes + badges) |
@@ -105,7 +106,7 @@ claude-config/
     ├── issue-creation.md                      # On-demand reference
     ├── settings.json.example                  # Hooks template
     ├── settings-hooks-examples.md             # Per-stack hook examples
-    └── skills/                                # All 14 skills (SKILL.md format)
+    └── skills/                                # All 15 skills (SKILL.md format)
         ├── analyze/SKILL.md
         ├── catchup/SKILL.md
         ├── commit/SKILL.md
@@ -116,6 +117,7 @@ claude-config/
         ├── research/SKILL.md
         ├── review/SKILL.md
         ├── security-scan/SKILL.md
+        ├── simplify/SKILL.md
         ├── tdd/SKILL.md
         ├── update-project/SKILL.md
         ├── update-readme/SKILL.md
@@ -200,7 +202,6 @@ Until adapters ship, copy a skill's body (everything below frontmatter) and past
 
 - `references/<topic>.md` progressive disclosure for skills that exceed 300 lines
 - Hook-level enforcement (e.g. PreToolUse hook blocking commits containing `BEGIN PRIVATE KEY`)
-- Optional `/simplify` skill for NAMING/SIMPLIFY/MODERN refactors (sibling to dead-code `/refactor`)
 
 ---
 
