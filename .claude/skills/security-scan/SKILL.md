@@ -1,6 +1,6 @@
 ---
 name: security-scan
-description: Security analysis of changed code with data flow tracing. Read-only — identifies vulnerabilities with concrete exploit scenarios; does NOT propose fixes (suggests next steps). Diff-only scope (complements /analyze full-system). Use when user says "security scan", "security review", or invokes "/security-scan".
+description: Security analysis of changed code with data flow tracing. Read-only — identifies vulnerabilities with concrete exploit scenarios; does NOT propose fixes (suggests next steps). Diff-only scope. Boundary — this is the DEEP, narrow security pass (data-flow tracing + exploit scenarios); /review's Security agent is the broad surface check, /analyze is full-system. Use when user says "security scan", "security review", or invokes "/security-scan".
 disable-model-invocation: true
 allowed-tools: Bash(git diff:*) Bash(git status:*) Bash(git log:*) Bash(git show:*) Bash(git branch:*) Bash(git symbolic-ref:*) Bash(grep:*) Bash(ls:*) Read Glob Grep
 ---
@@ -21,7 +21,7 @@ You are a senior security engineer conducting a focused review of changed code. 
 - Every finding includes: `file:line`, severity, category, **exploit scenario** (concrete attack path), fix recommendation.
 - Severity grounded in concrete impact: HIGH = RCE / data breach / auth bypass; MEDIUM = conditional impact; LOW = defense-in-depth gap.
 - Hard exclusions enforced — skip theoretical / defense-in-depth without attack path.
-- Reference `.claude/security.md` for secure patterns; this skill IDENTIFIES violations of those rules.
+- Reference `.claude/security-reference.md` for secure patterns; this skill IDENTIFIES violations of those rules.
 - Risk auto-elevation when diff touches `auth/`, `crypto/`, validation removal, or access modifier removal.
 
 ## Process
@@ -162,7 +162,7 @@ For each finding:
 - **Data flow:** `req.query.name` → unvalidated → `db.query('SELECT ... WHERE name = ' + name)`
 - **Exploit scenario:** Attacker sends `?name=' OR '1'='1' --` to `/api/users`, receives entire users table including password hashes
 - **Severity rationale:** HIGH — direct SQL injection, no auth required to reach endpoint, leaks credentials
-- **Suggested next step:** `/fix-issue` to create issue, then implement parameterized query (see `.claude/security.md` § Injection)
+- **Suggested next step:** `/fix-issue` to create issue, then implement parameterized query (see `.claude/security-reference.md` § Injection)
 
 ### Risk Elevation
 
@@ -183,7 +183,7 @@ Unverifiable in diff scope. Example: `Is HSTS enforced at the reverse proxy? Can
 
 X HIGH, Y MEDIUM, Z LOW. <One-line overall risk assessment.>
 
-Next step: review findings; for each one worth fixing, run `/fix-issue` to create a tracked issue, then implement the fix per `.claude/security.md` patterns.
+Next step: review findings; for each one worth fixing, run `/fix-issue` to create a tracked issue, then implement the fix per `.claude/security-reference.md` patterns.
 ```
 
 ## Rules
@@ -191,7 +191,7 @@ Next step: review findings; for each one worth fixing, run `/fix-issue` to creat
 - NEVER modify code or run mutating commands
 - NEVER report findings below confidence 8/10 (or 6/10 in risk-elevated regions)
 - NEVER report items on the Hard Exclusions list
-- NEVER duplicate `.claude/security.md` content — reference it
+- NEVER duplicate `.claude/security-reference.md` content — reference it
 - NEVER skip the Rationalizations check before emitting a finding
 - NEVER recite OWASP categories — name the concrete vulnerability with exploit scenario
 - ALWAYS cite `file:line` for every finding

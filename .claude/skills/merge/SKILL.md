@@ -29,7 +29,7 @@ Senior release engineer. Treats main as sacred. Verifies everything before mergi
 ### 1. Parse argument
 
 - `<integer>` → use as issue number
-- Empty → try to extract from branch name (regex `^(?:gh-|issue-|fix-|feature/)?([0-9]+)`)
+- Empty → try to extract from branch name (branch regex in `.claude/scan-patterns.md`)
 - No issue number extractable → ask user: "Which issue does this branch close, or `none`?"
 
 ### 2. Pre-merge safety checks (parallel reads)
@@ -51,24 +51,19 @@ If `git rev-parse --git-dir` differs from `git rev-parse --git-common-dir`, you'
 
 ### 4. Pre-merge verify gate
 
-Run gates sequentially, all must PASS:
+Run gates sequentially, all must PASS. Detection tables and scan patterns live in `.claude/scan-patterns.md` — read it first.
 
-**4a — Tests** (detected per stack — see `/verify` skill):
-- `npm test` / `bun test` / `pnpm test` / `pytest` / `vendor/bin/phpunit` / `go test ./...` / `cargo test` / `make test`
-- exit ≠ 0 → STOP
+**4a — Tests** (per test runner table): exit ≠ 0 → STOP
 
-**4b — Linter** (detected per stack):
-- `npm run lint` / `ruff check` / `flake8` / `phpcs` / `golangci-lint run` / `cargo clippy`
-- exit ≠ 0 → STOP
+**4b — Linter** (per linter table): exit ≠ 0 → STOP
 
-**4c — Secrets scan** on `git diff <base>..HEAD`:
-- Patterns from `/commit` skill (BEGIN .* PRIVATE KEY, AKIA, sk_*, ghp_, xox*, generic password/key/secret/token)
+**4c — Secrets scan** — secrets patterns on `git diff <base>..HEAD`:
 - Match → CRITICAL STOP
 
 **4d — AI-attribution in branch commits:**
-- `git log <base>..HEAD --format='%B' 2>/dev/null | grep -iE 'co-authored-by|generated with|claude code|🤖|🎯|Anthropic|Assisted-By'`
+- AI-attribution grep over `git log <base>..HEAD --format='%B'`
 - If found: STOP, instruct user to clean up commits before merge. Suggestions:
-  - `git commit --amend` to fix the most recent commit (if it's the only one)
+  - `git commit --amend` to fix the most recent commit (only with the user's explicit go-ahead, and only the immediately previous commit — same rule as `/commit`)
   - Replace commits with clean ones (manual `git reset --soft` + new commits)
   - Do NOT auto-`filter-branch` — too risky
 
@@ -81,10 +76,10 @@ Any FAIL → STOP, report what blocks. Do not proceed.
 
 **Conflict handling** if rebase produces conflicts:
 - STOP, list conflict files via `git status`
-- Ask user: "(a) Resolve interactively in editor (I'll wait), (b) abort rebase and use merge-from-base instead, (c) abort entirely"
+- Ask user: "(a) Resolve interactively in editor (I'll wait), (b) abort entirely"
 - **(a)**: wait for user signal "resolved"; then `git rebase --continue`. If more conflicts, repeat.
-- **(b)**: `git rebase --abort`, then `git merge origin/<base>` (a merge commit is OK in this case — better than blocking)
-- **(c)**: `git rebase --abort`, end turn
+- **(b)**: `git rebase --abort`, end turn
+- NO merge-from-base fallback — a merge commit on the feature branch pollutes the squash; squash merge after a clean rebase is the only path to main (per CLAUDE.md)
 
 NEVER `--no-edit`. NEVER `git rebase -i` (interactive disallowed).
 
@@ -126,12 +121,7 @@ If no issue number: omit `Closes #<n>` line.
 
 ### 9. AI-attribution sweep on final message
 
-Regex strip (silently, note in preview if found):
-- `Co-Authored-By:` (any value)
-- `Generated with`, `Claude Code`, `Anthropic`, `🤖`, `🎯`
-- `Assisted-By:`, `Co-Author:`
-- Marketing phrases: `Successfully implemented`, `Production-ready`, `Best-in-class`, `Comprehensive`, `Robust`
-- First-person on subject line: `^I\s`, `\bI added\b`, `\bI changed\b`
+Strip AI-attribution patterns (see `.claude/scan-patterns.md`) silently; note in preview if found.
 
 ### 10. Preview and await confirmation
 

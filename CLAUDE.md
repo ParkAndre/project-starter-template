@@ -93,14 +93,4 @@ Ask before modifying:
 @.claude/standards.md
 
 **Reference files** (read when relevant, not auto-loaded):
-`.claude/api-design.md`, `.claude/database.md`, `.claude/issue-creation.md`
-
----
-
-## Critical Rules (Repeated)
-
-- Use parameterized queries for all database operations
-- Store all secrets in environment variables (`.env`)
-- Always use feature branches with squash merge to main
-- Omit all AI attribution from commits (no Co-Authored-By)
-- Verify before claiming — run tests/app, confirm no errors, report actual state
+`.claude/api-design.md`, `.claude/database.md`, `.claude/issue-creation.md`, `.claude/security-reference.md`, `.claude/scan-patterns.md`

@@ -39,7 +39,7 @@ Run in a single response with parallel Bash calls:
 - `git branch --show-current`
 - `git log -5 --format='%h %s'`
 - `git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||'` — base branch detection (fall back to `main` if empty)
-- Parse current branch name for issue number with regex `^(?:gh-|issue-|fix-|feature/)?([0-9]+)`. If matched: `gh issue view <n> --json title,body 2>/dev/null` (silently skip if unauthenticated)
+- Parse current branch name for issue number with the branch regex from `.claude/scan-patterns.md`. If matched: `gh issue view <n> --json title,body 2>/dev/null` (silently skip if unauthenticated)
 
 ### 3. Staging gate
 
@@ -54,49 +54,22 @@ Run in a single response with parallel Bash calls:
 
 ### 5. Pre-commit safety scans (sequential, all must pass)
 
-**a. Secrets scan** — grep over staged diff additions (lines starting with `+`):
-- `BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY`
-- `AKIA[0-9A-Z]{16}` (AWS access key)
-- `sk_(live|test)_[a-zA-Z0-9]{24,}` (Stripe)
-- `ghp_[a-zA-Z0-9]{36}` (GitHub PAT)
-- `xox[baprs]-[a-zA-Z0-9-]+` (Slack token)
-- Generic: `(?i)(password|api[_-]?key|secret|token|access_key)\s*=\s*["'][^"'$]{8,}` (skip lines containing `$` — likely env var reference)
+Patterns and detection tables live in `.claude/scan-patterns.md` — read it before scanning.
 
+**a. Secrets scan** — secrets patterns over staged diff additions.
 If match: STOP, report `file:line`, abort. Suggest `git restore --staged <file>`. Do not continue.
 
-**b. Protected file scan** — staged files matching:
-- `.env`, `.env.local`, `.env.production`, `.env.staging`
-- `.htpasswd`
-- `*.pem`, `*.key`, `id_rsa*`, `*.p12`, `*.pfx`
-
+**b. Protected file scan** — protected file patterns over staged file list.
 If found: STOP, abort, suggest `git restore --staged <file>`.
 
-**c. Debug code scan** — modified non-test source files only (exclude paths matching `*test*`, `*spec*`, `__tests__/`):
-- `console\.log\(`, `console\.dir\(`
-- `\bdebugger\b`
-- `\bdd\(`, `\bvar_dump\(`, `\bprint_r\(`
-- `\bbreakpoint\(\)`, `\bbinding\.pry\b`
-
+**c. Debug code scan** — debug code patterns over modified non-test source files.
 If found: AskUserQuestion ("Debug code at `file:line`. Intentional? Abort? Commit anyway?").
 
-**d. Test runner detection + run** — smart skip if all staged files match `\.(md|txt|json|yml|yaml|toml)$` outside source directories:
-- `package.json` with `scripts.test` → `npm test` / `bun test` / `pnpm test` / `yarn test` (use detected package manager from lockfile)
-- `pytest.ini`, `pyproject.toml`, or `setup.cfg` → `pytest`
-- `phpunit.xml` → `vendor/bin/phpunit`
-- `go.mod` → `go test ./...`
-- `Cargo.toml` → `cargo test`
-- `Makefile` with `test` target → `make test`
-
+**d. Test runner detection + run** — per the test runner table. Smart skip if all staged files match `\.(md|txt|json|yml|yaml|toml)$` outside source directories.
 If detected and code changed: run. If fail: STOP and report stderr.
 If no runner detected: note "no test runner detected, skipping" — do not block.
 
-**e. Linter detection + run:**
-- `package.json scripts.lint` → run with `--fix` flag if supported
-- `pyproject.toml` with ruff/flake8 → `ruff check --fix` or `flake8`
-- `phpcs.xml` → `vendor/bin/phpcs`
-- `go.mod` → `golangci-lint run --fix` (if installed)
-- `Cargo.toml` → `cargo clippy --fix --allow-staged`
-
+**e. Linter detection + run** — per the linter table, with `--fix` flag where supported.
 If unfixable errors: STOP, report `file:line`.
 If no linter: skip with note.
 
@@ -116,7 +89,7 @@ Heuristic from staged diff content:
 ### 7. Detect branch context
 
 - Branch matches `^[0-9]+-` or `^(feature|fix|issue|gh-)/` → **feature branch** → use **SIMPLE** format
-- Branch is `main` or `master` → STOP. AskUserQuestion: "Committing directly to main. (a) Continue, (b) create feature branch first, (c) abort?"
+- Branch is `main` or `master` → STOP. Do not commit. Report: "On main — feature branches with squash merge are the only path to main (per CLAUDE.md)." Offer to create a feature branch and move the changes there. (Exception: the squash commit itself is made by `/merge`, not this skill.)
 - Detached HEAD → STOP, ask user
 - Other (work branch, e.g. `develop`) → default to SIMPLE; use FULL only if `$ARGUMENTS` explicitly contains "squash" or "merge"
 
@@ -157,12 +130,7 @@ Body bullets must each trace to a real hunk in the diff. `Closes #XX` line inclu
 - Every meaningful hunk (>5 lines, OR new file, OR function added/removed, OR exported symbol changed) → must be represented in the message
 - If scope-creep detected (hunk not represented): AskUserQuestion: "File `X` changed but not in message. (a) Add to message, (b) leave out, (c) split into separate commit?"
 
-**b. AI attribution sweep** — regex on message text. Strip silently if found; note in preview:
-- `Co-Authored-By:` (any value)
-- `Generated with`, `Claude Code`, `Anthropic`, `🤖`, `🎯`
-- `Assisted-By:`, `Co-Author:`
-- Marketing phrases: `Successfully implemented`, `Production-ready`, `Best-in-class`, `Comprehensive`, `Robust`
-- First-person on subject line: `^I\s`, `\bI added\b`, `\bI changed\b`, `\bI removed\b`
+**b. AI attribution sweep** — AI-attribution patterns from `.claude/scan-patterns.md` on message text. Strip silently if found; note in preview.
 
 **c. Format checks:**
 - Subject ≤72 chars
@@ -172,7 +140,7 @@ Body bullets must each trace to a real hunk in the diff. `Closes #XX` line inclu
 - FULL format: subject prefixed with `type:` from `{feat, fix, refactor, test, docs, style, chore, perf, build, ci}`
 
 **d. AI attribution in branch history check** (feature branch only, advisory):
-- `git log <base>..HEAD --format='%B' 2>/dev/null | grep -iE 'co-authored-by:|generated with|claude code|🤖'`
+- AI-attribution grep (see `.claude/scan-patterns.md`) over `git log <base>..HEAD --format='%B'`
 - If found: warn user "these need cleanup before squash-merge" — does not block current commit
 
 ### 10. Present preview, await confirmation
@@ -227,8 +195,8 @@ Next: more changes to commit? ready to /merge?
 ## Rules
 
 - NEVER `--no-verify`, `--no-gpg-sign` unless user explicitly requests
-- NEVER `--amend` unless user explicitly asks (create NEW commit instead — if a hook failed, the commit did not happen, so `--amend` would modify the PREVIOUS commit)
-- NEVER commit to `main` or `master` without explicit user confirmation
+- NEVER `--amend` to fix a hook failure (the commit did not happen — `--amend` would modify the PREVIOUS commit; create a NEW commit instead). Amending the immediately previous branch commit is allowed ONLY when the user explicitly asks (same rule in `/merge` and `/fix-issue`)
+- NEVER commit directly to `main` or `master` — STOP and offer a feature branch (the squash commit to main is made by `/merge` only)
 - NEVER include `Co-Authored-By: Claude` or any AI attribution
 - NEVER commit if pre-commit safety scans (5a–5e) fail
 - ALWAYS pass message via HEREDOC for multi-line safety

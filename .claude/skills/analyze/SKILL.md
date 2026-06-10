@@ -164,7 +164,7 @@ End every analysis with:
 ### 10. Optional report save
 
 If user asks ("save this", "write to file") OR analysis is Deep mode with >5 findings:
-- Suggest path: `~/Sites/claude-config/.planning/analysis-<subject-slug>-<YYYY-MM-DD>.md`
+- Suggest path: `.planning/analysis-<subject-slug>-<YYYY-MM-DD>.md` (at the project repo root)
 - Write file with full analysis + executive summary
 - Report path to user
 

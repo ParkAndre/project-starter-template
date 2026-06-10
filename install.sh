@@ -20,33 +20,14 @@ NC='\033[0m'
 echo -e "${BLUE}📦 Project Starter Template Installer${NC}"
 echo -e "${BLUE}======================================${NC}\n"
 
-# Create directories
-echo -e "${YELLOW}Creating directories...${NC}"
-mkdir -p .claude
-mkdir -p .claude/skills/analyze
-mkdir -p .claude/skills/catchup
-mkdir -p .claude/skills/commit
-mkdir -p .claude/skills/e2e
-mkdir -p .claude/skills/fix-issue
-mkdir -p .claude/skills/merge
-mkdir -p .claude/skills/refactor
-mkdir -p .claude/skills/research
-mkdir -p .claude/skills/review
-mkdir -p .claude/skills/security-scan
-mkdir -p .claude/skills/tdd
-mkdir -p .claude/skills/update-project
-mkdir -p .claude/skills/update-readme
-mkdir -p .claude/skills/verify
-mkdir -p .husky
-
-# Download files
-echo -e "${YELLOW}Downloading template files...${NC}"
-
+# Files to download (directories are derived from this list)
 files=(
     "CLAUDE.md"
     "CLAUDE.local.md.example"
     ".gitignore"
     ".claude/security.md"
+    ".claude/security-reference.md"
+    ".claude/scan-patterns.md"
     ".claude/testing.md"
     ".claude/api-design.md"
     ".claude/database.md"
@@ -73,6 +54,16 @@ files=(
 
     ".husky/pre-commit.example"
 )
+
+# Create directories derived from the file list
+echo -e "${YELLOW}Creating directories...${NC}"
+for file in "${files[@]}"; do
+    dir=$(dirname "$file")
+    [ "$dir" != "." ] && mkdir -p "$dir"
+done
+
+# Download files
+echo -e "${YELLOW}Downloading template files...${NC}"
 
 for file in "${files[@]}"; do
     # Skip .gitignore if it already exists (don't overwrite project-specific ignores)

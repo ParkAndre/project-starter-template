@@ -70,11 +70,13 @@ Imported via `@.claude/*.md` in `CLAUDE.md` — load automatically each session:
 
 | File | Purpose |
 |---|---|
-| `.claude/security.md` | OWASP ASVS 5.0-based security rules |
+| `.claude/security.md` | OWASP ASVS 5.0-based critical security rules (slim — details in `security-reference.md`) |
 | `.claude/testing.md` | TDD workflow, coverage thresholds, edge cases |
 | `.claude/standards.md` | Code quality, accessibility, logging |
 
 **Reference files** (on-demand, not auto-imported — read when relevant):
+- `.claude/security-reference.md` — Full OWASP ASVS guidance (auth, sessions, JWT, CSRF, headers, crypto, rate limits)
+- `.claude/scan-patterns.md` — Canonical scan patterns (secrets, AI-attribution, debug code) + test runner/linter detection, shared by `/commit`, `/merge`, `/verify`, `/review`
 - `.claude/api-design.md` — REST/API conventions
 - `.claude/database.md` — Migration and ORM guidance
 - `.claude/issue-creation.md` — Bilingual issue draft workflow
@@ -93,9 +95,11 @@ claude-config/
 ├── install.sh                                 # Bootstrap script
 ├── .gitignore                                 # Generic starter
 └── .claude/
-    ├── security.md                            # @import (auto-loaded)
+    ├── security.md                            # @import (auto-loaded, critical rules only)
     ├── testing.md                             # @import (auto-loaded)
     ├── standards.md                           # @import (auto-loaded)
+    ├── security-reference.md                  # On-demand reference (full OWASP guidance)
+    ├── scan-patterns.md                       # On-demand reference (shared scan patterns)
     ├── api-design.md                          # On-demand reference
     ├── database.md                            # On-demand reference
     ├── issue-creation.md                      # On-demand reference
@@ -231,7 +235,7 @@ After installing into your project, customize these:
 
 ### How much context does this use per session?
 
-Auto-loaded content (`CLAUDE.md` + 3 imported guidelines) is ~450 lines. Skills load only when invoked. Reference files (`api-design.md`, etc.) load on demand.
+Auto-loaded content (`CLAUDE.md` + 3 imported guidelines) is ~250 lines — `security.md` carries only the critical rules, with full guidance in the on-demand `security-reference.md`. Skills load only when invoked. Reference files (`scan-patterns.md`, `api-design.md`, etc.) load on demand.
 
 ### Can I use this with other AI tools (Cursor, Copilot, Aider)?
 
